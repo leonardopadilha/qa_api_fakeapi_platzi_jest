@@ -22,9 +22,9 @@ jobs:
           node-version: '20'
 
       - name: Instalar dependencias
-        uses: npm install
+        run: npm install
 
       - name: Executar os testes
-        uses: npm run test
+        run: npm run test
 
 
