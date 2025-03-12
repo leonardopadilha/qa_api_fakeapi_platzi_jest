@@ -1,0 +1,30 @@
+name: Validando rota de usuários
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        uses: npm install
+
+      - name: Executar os testes
+        uses: npm run test
+
+
