@@ -30,4 +30,10 @@ jobs:
       - name: Executar os testes
         run: npm run test
 
+      - name: Coverage
+        uses: actions/checkout@v3
+        
+      - name: Gerando coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
+
 
