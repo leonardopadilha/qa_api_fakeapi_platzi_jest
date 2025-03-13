@@ -34,13 +34,14 @@ jobs:
         run: newman run postman_collection.json --globals postman_environment.json
         
       - name: Gerando relatório das execuções das collections do postman
-        run: newman run postman_collection.json --globals postman_environment.json -r htmlextra
+        run: newman run postman_collection.json -e postman_environment.json --reporters html,cli --reporter-html-export newman_report.html
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload Newman report as artifact
+        uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: report-newman
-          path: /newman
+          path: newman_report.html
 
       - name: Instalar dependencias
         run: npm install
