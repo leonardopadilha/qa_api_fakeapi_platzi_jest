@@ -6,6 +6,8 @@ Automação de teste Web utilizando Jest
 
 [![NODE](https://img.shields.io/badge/License-node-green.svg)](https://nodejs.org/en)
 [![Jest](https://img.shields.io/badge/license-jest-red.svg)](https://jestjs.io/)
+[![Postman](https://img.shields.io/badge/license-postman-red.svg)](https://www.postman.com/)
+[![Newman](https://img.shields.io/badge/license-newman-red.svg)](https://www.npmjs.com/package/newman)
 [![JS](https://img.shields.io/badge/license-javascript-blue.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 ## Descrição do Projeto
