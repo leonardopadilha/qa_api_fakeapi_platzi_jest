@@ -28,3 +28,9 @@ Instalar as dependências
 ```bash
   npm run test
 ```
+
+## Executa os testes do Newman e gera um relatório newman_report.html no diretório onde o comando é executado
+
+```bash
+  newman run postman_collection.json -e postman_environment.json --reporters html,cli --reporter-html-export newman_report.html
+```
