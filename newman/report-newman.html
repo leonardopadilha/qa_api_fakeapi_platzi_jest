@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: scroll;">
+<head>
+  <meta charset="UTF-8">
+  <title>Newman Summary Report</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+
+<style>
+code.renderMarkdown table, code.renderMarkdown th, code.renderMarkdown td {
+    border: 1px solid black;
+    width: max-content;
+    padding: .75rem;
+}
+
+.theme-dark {
+    --background-color: #222;
+    --bg-card-deck: #444444;
+    --text-color: #ccd2d8;
+    --tab-border: solid 1px #444;
+    --success: #3c9372;
+    --failure: #c24a3f;
+    --warning: #d28c23;
+    --info: #4083b6;
+    --badge-outline: #3c9372;
+    --badge-bg: #cdd3db;
+    --badge-text: #ccd2d9;
+    --failure-row: #c24a3f;
+    --warning-row: #d28c23;
+    --card-bg: #444;
+    --card-footer: #4f5758;
+    --form-input: #ececb5;
+    --hov-text: #d2dae5;
+    --h4-text: #ccd1d9;
+}
+
+.theme-light {
+    --tab-border: solid 1px #fff;
+    --text-color: #000000;
+    --success: #42a745;
+    --failure: #dc3544;
+    --warning: #f4c10b;
+    --info: #49a1b8;
+    --badge-outline: #040411;
+    --badge-bg: #f8f9fa;
+    --badge-text: #fff;
+    --failure-row: #f5c6cb;
+    --warning-row: #ffeeba;
+    --card-bg: #f7f7f7;
+    --hov-text: #fff;
+    --h4-text: #ffffff;
+}
+
+body {
+  padding-top:30px;
+  background-color: var(--background-color)!important;
+  color: var(--text-color);
+}
+
+#execution-data {
+  padding: 10px;
+  border: var(--tab-border);
+  border-top: none;
+}
+
+.nav-tabs {
+  padding-top: 10px;
+  height: 105px;
+  overflow-y: auto;
+}
+
+body.theme-dark .card-header {
+    background-color: #444;
+}
+
+body.theme-light .card-header {
+    background-color: #f7f7f7;
+}
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: var(--card-footer);
+}
+
+.card-deck {
+    background-color: var(--bg-card-deck)!important;
+}
+.form-control {
+    background: var(--form-input);
+}
+
+.custom-tab {
+  padding: 10px 15px;
+  margin-right: 0px;
+  height: 47px;
+  width: 69px;
+  text-align: center;
+  border: var(--tab-border);
+  border-bottom: none;
+  cursor:pointer;
+}
+
+body.theme-dark .text-white {
+    color: #ccd2d9!important;
+}
+h4 {
+    color: var(--h4-text);
+}
+
+body.theme-dark h1 {
+    color: #ccd2da;
+}
+
+body.theme-dark .bg-light>td {
+    background: #4f5858!important;
+}
+
+body.theme-dark .hljs {
+    background: #0a0a0ab0!important;
+    color: #8d8787!important;
+}
+
+.bg-info {
+    background-color: var(--info)!important;
+}
+.bg-success {
+    background-color: var(--success)!important;
+}
+
+.alert-success {
+    background-color: var(--success)!important;
+}
+
+.alert-warning {
+    background-color: var(--warning)!important;
+}
+
+.alert-info {
+    background-color: var(--info)!important;
+}
+
+.bg-warning {
+    background-color: var(--warning)!important;
+}
+
+.badge-warning {
+    color: var(--badge-text)!important;
+    background-color: var(--warning)!important;
+}
+
+.table-warning>td {
+    background-color: var(--warning-row);
+}
+
+.alert-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .alert-dark {
+    background-color: #636467!important;
+}
+
+body.theme-dark .text-dark {
+    color: #d1dae4!important;
+}
+
+body.theme-dark .badge-light {
+    color: #212529;
+    background-color: #cdd3db;
+}
+
+body.theme-light .badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+body.theme-light .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.table-danger>td {
+    background-color: var(--failure-row);
+}
+
+body.theme-dark .table .thead-light th {
+    background-color: #4f5858!important;
+    border-color: #dee2e6!important;
+    color: #ccd2d8!important;
+}
+
+.itPassed {
+  background: var(--success);
+  color: white;
+}
+.itFailed {
+  background: var(--failure);
+  color: white;
+}
+
+.resultsInfoPass {
+  color: var(--success);
+  padding-top: 4px;
+}
+
+.resultsInfoFail {
+  color: var(--failure);
+  padding-top: 4px;
+}
+
+.badge-outline-success {
+  color: var(--success);
+  border: 1px solid var(--success);
+  background-color: transparent;
+}
+
+.badge-outline {
+  color: var(--badge-outline);
+  border: 1px solid var(--badge-outline);
+  background-color: transparent;
+}
+
+.btn-outline-success {
+    color: var(--success)!important;
+    border-color: var(--success)!important;
+}
+
+.backToTop:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-secondary {
+  background-color: var(--success)!important;
+  color: var(--hov-text)!important;
+}
+
+body.theme-dark .env-heading {
+    color: #ccd2d9!important;
+}
+
+body, html {
+  height:100%;
+}
+
+.card {
+  overflow:hidden;
+}
+
+body.theme-dark .card-body {
+    background-color: #444;
+}
+
+body.theme-light .card-body {
+    background-color: #f7f7f7;
+}
+
+body.theme-dark .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-light .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.card-body .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.card-body .rotate i {
+  color: #14141426;
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+}
+
+.dyn-height {
+  max-height:350px;
+  overflow-y:auto;
+}
+
+.nav-pills .nav-link.active {
+  background-color: transparent!important;
+}
+
+.backToTop {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 99;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+.single-line-tabs {
+  padding-top: 10px;
+  height: 60px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #4083b6;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4083b6;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+table.dataTable td, table.dataTable tr {
+    vertical-align: middle;
+}
+
+body.theme-dark code {
+    color: #ccd2d8!important;
+}
+
+body.theme-light code {
+    color: #000000!important;
+}
+
+.text-wrap {
+    word-wrap: break-word; 
+    min-width: 600px; 
+    max-width: 600px; 
+    white-space: normal;
+}
+
+</style>
+</head>
+<body class="theme-dark">
+<script>
+    function setTheme(themeName) {
+        localStorage.setItem('theme', themeName);
+        document.body.className = themeName;
+    }
+
+    function toggleTheme() {
+        if (localStorage.getItem('theme') === 'theme-light') {
+            setTheme('theme-dark');
+        } else {
+            setTheme('theme-light');
+        }
+    }
+</script>
+  <div class="container">
+        <div class="container">
+            <label>Light</label>
+            <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="slider round"></span>
+            </label>
+            <label>Dark</label>
+        </div>
+        <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+            <li class="nav-item bg-info active" data-toggle="tooltip" title="Click to view the Summary">
+                <a class="nav-link text-white" id="pills-summary-tab" data-toggle="pill" href="#pills-summary" role="tab" aria-controls="pills-summary" aria-selected="true">Summary</a>
+            </li>
+            <li class="nav-item bg-success" data-toggle="tooltip" title="Click to view the Requests">
+                <a class="nav-link text-white" id="pills-requests-tab" data-toggle="pill" href="#pills-requests" role="tab" aria-controls="pills-requests" aria-selected="false">Total Requests <span class="badge badge-light">3</span></a>
+            </li>
+            <li class="nav-item bg-danger" data-toggle="tooltip" title="Click to view the Failed Tests">
+                <a class="nav-link text-white" id="pills-failed-tab" data-toggle="pill" href="#pills-failed" role="tab" aria-controls="pills-failed" aria-selected="false">Failed Tests <span class="badge badge-light">0</span></a>
+            </li>
+            <li class="nav-item bg-warning" data-toggle="tooltip" title="Click to view the Skipped Tests">
+                <a class="nav-link text-white" id="pills-skipped-tab" data-toggle="pill" href="#pills-skipped" role="tab" aria-controls="pills-skipped" aria-selected="false">Skipped Tests <span class="badge badge-light">0</span></a>
+            </li>
+            </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-summary" role="tabcard" aria-labelledby="pills-summary-tab">
+<div class="row">
+  <div class="col-md-9 col-lg-12 main">
+   <h1 class="display-2 text-center">Newman Run Dashboard</h1>
+   <h5 class="text-center">Wednesday, 12 March 2025 22:15:30</h5>
+   <div class="row">
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-success">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-retweet fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Iterations</h6>
+       <h1 class="display-1">1</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-danger">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-list fa-4x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Assertions</h6>
+       <h1 class="display-1">7</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-info">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-plus-circle fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Failed Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-warning">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-share fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Skipped Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+   </div>
+   <hr>
+    <div class="row">
+    <div class="col">
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">File Information</h5>
+                <span><i class="fas fa-file-code"></i></span><strong> Collection:</strong> fakeapi_platzi<br>
+                
+                
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">Timings and Data</h5>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Total run duration:</strong> 1535ms<br>
+                <span><i class="fas fa-database"></i></span><strong> Total data received:</strong> 14.1KB<br>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Average response time:</strong> 399ms<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr class="text-center">
+                        <th class="text-uppercase">Summary Item</th>
+                        <th class="text-uppercase">Total</th>
+                        <th class="text-uppercase">Failed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Requests</td>
+                        <td class="text-center">3</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Prerequest Scripts</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Test Scripts</td>
+                        <td class="text-center">3</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="">
+                        <td>Assertions</td>
+                        <td class="text-center">7</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="">
+                        <td>Skipped Tests</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    <hr>
+   </div>
+   </div>
+  </div>
+ </div>
+        </div>
+            <div class="tab-pane fade" id="pills-failed" role="tabcard" aria-labelledby="pills-failed-tab">
+                <button id="topOfFailuresScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                     <br><br><h1 class="text-center">There are no failed tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-skipped" role="tabcard" aria-labelledby="pills-skipped-tab">
+                <button id="topOfSkippedScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                    <br><br><h1 class="text-center">There are no skipped tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-requests" role="tabcard" aria-labelledby="pills-requests-tab">
+
+            <button id="topOfRequestsScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+            <div class="btn-group float-right" role="group" aria-label="Button Group">
+                <button id="openAll" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Folders</button>
+                <button id="openAllRequests" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Requests</button>
+            </div>
+
+    <div class="text-uppercase" id="execution-menu">
+        <h5>1 Iteration available to view</h5>
+        
+        <nav class="table-responsive">
+        <ul class="nav single-line-tabs" id="iterationList">
+        </ul>
+        </nav>
+    </div>
+    <h6 class="text-uppercase text-muted" id="iterationSelected" style="padding-top: 10px;"></h6>
+	<div class="tab-content" id="execution-data">
+        <div class="alert alert-dark text-uppercase text-center iteration-0">
+        <a data-toggle="collapse" href="#" data-target="#folder-collapse-6f4d8d28-5caf-4443-abdc-9f1591b7cc59-iteration-0" aria-expanded="false" aria-controls="collapse" id="folder-6f4d8d28-5caf-4443-abdc-9f1591b7cc59-iteration-0" class="collapsed text-dark z-block">
+        <i class="fas fa-info-circle float-left resultsInfoPass" ></i>
+            Users - 3 Requests in the folder<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+        </a>
+        </div>
+        <div id="folder-collapse-6f4d8d28-5caf-4443-abdc-9f1591b7cc59-iteration-0" class="collapse" aria-labelledby="folder-6f4d8d28-5caf-4443-abdc-9f1591b7cc59">
+            <div id="folder-560008f8-8872-48c3-bcfd-6da86e125c98" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-560008f8-8872-48c3-bcfd-6da86e125c98" aria-expanded="false" aria-controls="collapse" id="requests-560008f8-8872-48c3-bcfd-6da86e125c98" class="collapsed text-white z-block">
+                    Iteration: 1 - Get all users <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-560008f8-8872-48c3-bcfd-6da86e125c98" class="collapse" aria-labelledby="requests-560008f8-8872-48c3-bcfd-6da86e125c98">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://api.escuelajs.co/api/v1/users" target="_blank">https://api.escuelajs.co/api/v1/users</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 886ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 13.86KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">c2b59f9f-e508-4214-973a-54dfae6773d1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">api.escuelajs.co</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">Cowboy</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Report-To</td>
+                                                    <td class="text-wrap">{&quot;group&quot;:&quot;heroku-nel&quot;,&quot;max_age&quot;:3600,&quot;endpoints&quot;:[{&quot;url&quot;:&quot;https://nel.heroku.com/reports?ts&#x3D;1741828535&amp;sid&#x3D;c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&amp;s&#x3D;DRwyY21wPAW8rJBPGIoerEqpjbcKlGljULg24uF9K%2B0%3D&quot;}]}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Reporting-Endpoints</td>
+                                                    <td class="text-wrap">heroku-nel&#x3D;https://nel.heroku.com/reports?ts&#x3D;1741828535&amp;sid&#x3D;c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&amp;s&#x3D;DRwyY21wPAW8rJBPGIoerEqpjbcKlGljULg24uF9K%2B0%3D</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Nel</td>
+                                                    <td class="text-wrap">{&quot;report_to&quot;:&quot;heroku-nel&quot;,&quot;max_age&quot;:3600,&quot;success_fraction&quot;:0.005,&quot;failure_fraction&quot;:0.05,&quot;response_headers&quot;:[&quot;Via&quot;]}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Security-Policy</td>
+                                                    <td class="text-wrap">script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://cdn.jsdelivr.net;img-src &#x27;self&#x27; data: https://cdn.jsdelivr.net;default-src &#x27;self&#x27;;base-uri &#x27;self&#x27;;font-src &#x27;self&#x27; https: data:;form-action &#x27;self&#x27;;frame-ancestors &#x27;self&#x27;;object-src &#x27;none&#x27;;script-src-attr &#x27;none&#x27;;style-src &#x27;self&#x27; https: &#x27;unsafe-inline&#x27;;upgrade-insecure-requests</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Cross-Origin-Opener-Policy</td>
+                                                    <td class="text-wrap">same-origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Cross-Origin-Resource-Policy</td>
+                                                    <td class="text-wrap">same-origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Origin-Agent-Cluster</td>
+                                                    <td class="text-wrap">?1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Referrer-Policy</td>
+                                                    <td class="text-wrap">no-referrer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Strict-Transport-Security</td>
+                                                    <td class="text-wrap">max-age&#x3D;31536000; includeSubDomains</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td class="text-wrap">nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Dns-Prefetch-Control</td>
+                                                    <td class="text-wrap">off</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Download-Options</td>
+                                                    <td class="text-wrap">noopen</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td class="text-wrap">SAMEORIGIN</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Permitted-Cross-Domain-Policies</td>
+                                                    <td class="text-wrap">none</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Xss-Protection</td>
+                                                    <td class="text-wrap">0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Access-Control-Allow-Origin</td>
+                                                    <td class="text-wrap">*</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Length</td>
+                                                    <td class="text-wrap">14195</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Etag</td>
+                                                    <td class="text-wrap">W/&quot;3773-J/sRhqPzAWc8qd7+scqcuikac/k&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Thu, 13 Mar 2025 01:15:35 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Via</td>
+                                                    <td class="text-wrap">1.1 vegur</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-61fab7f0-4d8d-4684-b926-fda29d5601ef" class="prettyPrint">[{&quot;id&quot;:1,&quot;email&quot;:&quot;john@mail.com&quot;,&quot;password&quot;:&quot;changeme&quot;,&quot;name&quot;:&quot;Jhon&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/LDOO4Qs.jpg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:21:15.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:21:15.000Z&quot;},{&quot;id&quot;:2,&quot;email&quot;:&quot;maria@mail.com&quot;,&quot;password&quot;:&quot;12345&quot;,&quot;name&quot;:&quot;Maria&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/DTfowdu.jpg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:21:15.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:21:15.000Z&quot;},{&quot;id&quot;:3,&quot;email&quot;:&quot;admin@mail.com&quot;,&quot;password&quot;:&quot;admin123&quot;,&quot;name&quot;:&quot;Admin&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/yhW6Yw1.jpg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:21:15.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:21:15.000Z&quot;},{&quot;id&quot;:4,&quot;email&quot;:&quot;123456@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;Nicolas&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;avatar&quot;:&quot;https://www.freepik.es/fotos-vectores-gratis/fondos-coloridos#from_element&#x3D;home_trends&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:21:17.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:48:10.000Z&quot;},{&quot;id&quot;:5,&quot;email&quot;:&quot;juan.perez@example.com&quot;,&quot;password&quot;:&quot;7634&quot;,&quot;name&quot;:&quot;jklklk;l&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://example.com/avatar/juanperez.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:22:08.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T17:46:26.000Z&quot;},{&quot;id&quot;:6,&quot;email&quot;:&quot;martin@gmail.com&quot;,&quot;password&quot;:&quot;4321&quot;,&quot;name&quot;:&quot;Martin&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://static.vecteezy.com/system/resources/thumbnails/046/776/742/small/friendly-young-man-with-beard-wearing-black-t-shirt-waving-hello-in-studio-portrait-on-white-background-photo.jpg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:26:28.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:26:28.000Z&quot;},{&quot;id&quot;:7,&quot;email&quot;:&quot;kspulido2005@gmail.com&quot;,&quot;password&quot;:&quot;1205&quot;,&quot;name&quot;:&quot;Santiago&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://img.freepik.com/premium-vector/avatar-icon0002_750950-43.jpg?semt&#x3D;ais_hybrid&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:26:40.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:26:40.000Z&quot;},{&quot;id&quot;:8,&quot;email&quot;:&quot;estetrocillo@gmail.com&quot;,&quot;password&quot;:&quot;12345&quot;,&quot;name&quot;:&quot;Cepeda&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:29:35.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:34:25.000Z&quot;},{&quot;id&quot;:9,&quot;email&quot;:&quot;bbasemsaid@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;basem&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/peTH8SQ.jpeg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:32:24.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:32:24.000Z&quot;},{&quot;id&quot;:10,&quot;email&quot;:&quot;sena@edu.co&quot;,&quot;password&quot;:&quot;hacking123&quot;,&quot;name&quot;:&quot;Elmejorhackerdelmundo&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;avatar&quot;:&quot;https://www.google.com/url?sa&#x3D;i&amp;url&#x3D;https%3A%2F%2Fwww.campusciberseguridad.com%2Fblog%2Ftipos-de-hackers%2F&amp;psig&#x3D;AOvVaw2Kdti292ir-AA3sqGoUnP3&amp;ust&#x3D;1741882351546000&amp;source&#x3D;images&amp;cd&#x3D;vfe&amp;opi&#x3D;89978449&amp;ved&#x3D;0CBQQjRxqFwoTCOjygKr3hIwDFQAAAAAdAAAAABAE&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:32:39.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:14:41.000Z&quot;},{&quot;id&quot;:11,&quot;email&quot;:&quot;lolokoko@gmail.com&quot;,&quot;password&quot;:&quot;lolokoko&quot;,&quot;name&quot;:&quot;lolokoko&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/800&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:32:48.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:32:48.000Z&quot;},{&quot;id&quot;:12,&quot;email&quot;:&quot;bbasemsaid@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;basem&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/peTH8SQ.jpeg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:32:58.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:32:58.000Z&quot;},{&quot;id&quot;:13,&quot;email&quot;:&quot;basem@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;basem&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/peTH8SQ.jpeg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:33:33.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:33:33.000Z&quot;},{&quot;id&quot;:14,&quot;email&quot;:&quot;ANDES@gmail.com&quot;,&quot;password&quot;:&quot;7894&quot;,&quot;name&quot;:&quot;ANTONIO&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:34:45.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:41:01.000Z&quot;},{&quot;id&quot;:15,&quot;email&quot;:&quot;bbasemsaid@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;basem&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/peTH8SQ.jpeg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:34:46.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:34:46.000Z&quot;},{&quot;id&quot;:16,&quot;email&quot;:&quot;bbasemsaid@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;basem&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/peTH8SQ.jpeg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:36:36.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:36:36.000Z&quot;},{&quot;id&quot;:17,&quot;email&quot;:&quot;BryanC@gmail.com&quot;,&quot;password&quot;:&quot;54321&quot;,&quot;name&quot;:&quot;Daniel_Cepeda&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:36:57.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:38:12.000Z&quot;},{&quot;id&quot;:18,&quot;email&quot;:&quot;nico@gmail.com&quot;,&quot;password&quot;:&quot;1235&quot;,&quot;name&quot;:&quot;Nicolas&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:37:55.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:37:55.000Z&quot;},{&quot;id&quot;:19,&quot;email&quot;:&quot;javi@gmail.com&quot;,&quot;password&quot;:&quot;1234&quot;,&quot;name&quot;:&quot;Javier&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:38:05.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:38:05.000Z&quot;},{&quot;id&quot;:20,&quot;email&quot;:&quot;sdaniloscofield4@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;teste&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:38:07.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:38:07.000Z&quot;},{&quot;id&quot;:21,&quot;email&quot;:&quot;nikoo@gmail.com&quot;,&quot;password&quot;:&quot;1313&quot;,&quot;name&quot;:&quot;NiKO BOY&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://images.icon-icons.com/2367/PNG/512/user_icon_143482.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:39:46.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:43:36.000Z&quot;},{&quot;id&quot;:22,&quot;email&quot;:&quot;nico@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;Nicolas&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:47:30.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:47:30.000Z&quot;},{&quot;id&quot;:23,&quot;email&quot;:&quot;andrepele@gmail.com&quot;,&quot;password&quot;:&quot;654321&quot;,&quot;name&quot;:&quot;Andres&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://th.bing.com/th/id/R.6038c4aa1ab50ea68c627c8ac5ff4dcd?rik&#x3D;nKpDD7zFyC5kIg&amp;pid&#x3D;ImgRaw&amp;r&#x3D;0&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:50:45.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:52:10.000Z&quot;},{&quot;id&quot;:24,&quot;email&quot;:&quot;dlck2823@gmail.com&quot;,&quot;password&quot;:&quot;cen230728&quot;,&quot;name&quot;:&quot;Deadlock &quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:50:53.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:54:38.000Z&quot;},{&quot;id&quot;:25,&quot;email&quot;:&quot;giuseppe@gmail.com&quot;,&quot;password&quot;:&quot;123456778899&quot;,&quot;name&quot;:&quot;Giuseppe Esteban&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:51:02.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:54:55.000Z&quot;},{&quot;id&quot;:26,&quot;email&quot;:&quot;andres@gmail.com&quot;,&quot;password&quot;:&quot;3214&quot;,&quot;name&quot;:&quot;Andrés&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;avatar&quot;:&quot;https://goo.su/p9cHU&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:52:05.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:57:08.000Z&quot;},{&quot;id&quot;:27,&quot;email&quot;:&quot;ramondino@gmail.com&quot;,&quot;password&quot;:&quot;1234567&quot;,&quot;name&quot;:&quot;ESTEBAN QUITO &quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://www.interflora.es/blog/wp-content/uploads/rosa-reina-flores.jpg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:52:43.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:54:09.000Z&quot;},{&quot;id&quot;:28,&quot;email&quot;:&quot;nico@gmail.com&quot;,&quot;password&quot;:&quot;1235&quot;,&quot;name&quot;:&quot;Nicolas&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:52:48.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:52:48.000Z&quot;},{&quot;id&quot;:29,&quot;email&quot;:&quot;cotamosanti03@gmail.com&quot;,&quot;password&quot;:&quot;345726383683383&quot;,&quot;name&quot;:&quot;santiago &quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:53:27.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:53:27.000Z&quot;},{&quot;id&quot;:30,&quot;email&quot;:&quot;yeissongonzalez2808@gmail.com&quot;,&quot;password&quot;:&quot;yeisso2808&quot;,&quot;name&quot;:&quot;Yeisson Gonzalez&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;avatar&quot;:&quot;https://www.google.com/url?sa&#x3D;i&amp;url&#x3D;https%3A%2F%2Fes.pinterest.com%2Fpin%2F70-fotos-de-perfil-para-whatsapp-instagram-y-facebook--864761565927358063%2F&amp;psig&#x3D;AOvVaw0jKCDGuR6s01mJ2v_vPlAI&amp;ust&#x3D;1741881277981000&amp;source&#x3D;images&amp;cd&#x3D;vfe&amp;opi&#x3D;89978449&amp;ved&#x3D;0CBQQjRxqFwoTCJC18MnzhIwDFQAAAAAdAAAAABAE&quot;,&quot;creationAt&quot;:&quot;2025-03-12T15:57:10.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T15:59:32.000Z&quot;},{&quot;id&quot;:31,&quot;email&quot;:&quot;sdaniloscofield22@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;React Pro&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:00:34.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:00:34.000Z&quot;},{&quot;id&quot;:32,&quot;email&quot;:&quot;sdaniloscofield6@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;React Pro&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:06:57.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:06:57.000Z&quot;},{&quot;id&quot;:33,&quot;email&quot;:&quot;nico@gmail.com&quot;,&quot;password&quot;:&quot;12345&quot;,&quot;name&quot;:&quot;Nicolas&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:15:03.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:15:03.000Z&quot;},{&quot;id&quot;:34,&quot;email&quot;:&quot;reminisenciasjuan@edu.co&quot;,&quot;password&quot;:&quot;hacking123&quot;,&quot;name&quot;:&quot;Juan&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:16:15.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:16:15.000Z&quot;},{&quot;id&quot;:35,&quot;email&quot;:&quot;opiltsani@gmail.com&quot;,&quot;password&quot;:&quot;Tsani1120&quot;,&quot;name&quot;:&quot;DH FOOD&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:17:24.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:17:24.000Z&quot;},{&quot;id&quot;:36,&quot;email&quot;:&quot;user@gmail.com&quot;,&quot;password&quot;:&quot;password&quot;,&quot;name&quot;:&quot;Name Update&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:20:12.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:21:01.000Z&quot;},{&quot;id&quot;:37,&quot;email&quot;:&quot;anas@gmail.com&quot;,&quot;password&quot;:&quot;12345&quot;,&quot;name&quot;:&quot;Anas Attoum&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:39:16.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:39:16.000Z&quot;},{&quot;id&quot;:38,&quot;email&quot;:&quot;mamedov98@gmail.com&quot;,&quot;password&quot;:&quot;mamedov98&quot;,&quot;name&quot;:&quot;Ayaz Memmedov&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/800&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:40:36.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:40:36.000Z&quot;},{&quot;id&quot;:39,&quot;email&quot;:&quot;arnulf@gmail.com&quot;,&quot;password&quot;:&quot;4765&quot;,&quot;name&quot;:&quot;Arnulfo&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:43:06.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:43:06.000Z&quot;},{&quot;id&quot;:40,&quot;email&quot;:&quot;lolokoko@gmail.com&quot;,&quot;password&quot;:&quot;lolokoko&quot;,&quot;name&quot;:&quot;lokoloko&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/800&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:48:26.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:48:26.000Z&quot;},{&quot;id&quot;:41,&quot;email&quot;:&quot;suraj@gmail.com&quot;,&quot;password&quot;:&quot;1234&quot;,&quot;name&quot;:&quot;Suraj Chouhan&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/801&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:48:50.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:48:50.000Z&quot;},{&quot;id&quot;:42,&quot;email&quot;:&quot;suraj123@gmail.com&quot;,&quot;password&quot;:&quot;1234&quot;,&quot;name&quot;:&quot;Suraj123 Chouhan&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/802&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:54:16.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:54:16.000Z&quot;},{&quot;id&quot;:43,&quot;email&quot;:&quot;suraj12@gmail.com&quot;,&quot;password&quot;:&quot;1234&quot;,&quot;name&quot;:&quot;Suraj12 Chouhan&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/803&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:55:58.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:55:58.000Z&quot;},{&quot;id&quot;:44,&quot;email&quot;:&quot;suraj34@gmail.com&quot;,&quot;password&quot;:&quot;1234&quot;,&quot;name&quot;:&quot;Suraj34 Chouhan&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/804&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:57:32.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:57:32.000Z&quot;},{&quot;id&quot;:45,&quot;email&quot;:&quot;suraj45@gmail.com&quot;,&quot;password&quot;:&quot;1234&quot;,&quot;name&quot;:&quot;Suraj45 Chouhan&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/805&quot;,&quot;creationAt&quot;:&quot;2025-03-12T16:58:55.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T16:58:55.000Z&quot;},{&quot;id&quot;:46,&quot;email&quot;:&quot;rahul@gmail.con&quot;,&quot;password&quot;:&quot;1234&quot;,&quot;name&quot;:&quot;Rahul Sen&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/806&quot;,&quot;creationAt&quot;:&quot;2025-03-12T17:03:05.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T17:03:05.000Z&quot;},{&quot;id&quot;:47,&quot;email&quot;:&quot;satish@gmail.com&quot;,&quot;password&quot;:&quot;1234&quot;,&quot;name&quot;:&quot;Satish&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/807&quot;,&quot;creationAt&quot;:&quot;2025-03-12T17:08:34.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T17:08:34.000Z&quot;},{&quot;id&quot;:48,&quot;email&quot;:&quot;koko@gmail.com&quot;,&quot;password&quot;:&quot;koko&quot;,&quot;name&quot;:&quot;kokolohjh&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;150&amp;h&#x3D;220&quot;,&quot;creationAt&quot;:&quot;2025-03-12T17:53:19.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T17:55:23.000Z&quot;},{&quot;id&quot;:49,&quot;email&quot;:&quot;koko@gmail.com&quot;,&quot;password&quot;:&quot;koko&quot;,&quot;name&quot;:&quot;koko&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;150&amp;h&#x3D;220&quot;,&quot;creationAt&quot;:&quot;2025-03-12T17:56:46.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T17:56:46.000Z&quot;},{&quot;id&quot;:50,&quot;email&quot;:&quot;Gotica@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;Superman&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://encrypted-tbn0.gstatic.com/images?q&#x3D;tbn:ANd9GcQm4UvkBEJ3Cen3hxnvxLfhf5ifT4Uu0LPTBQ&amp;s&quot;,&quot;creationAt&quot;:&quot;2025-03-12T18:09:41.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T18:12:40.000Z&quot;},{&quot;id&quot;:51,&quot;email&quot;:&quot;sdaniloscofield@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;teste&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T18:47:30.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T18:47:30.000Z&quot;},{&quot;id&quot;:52,&quot;email&quot;:&quot;oluchukwuokpala1759@gmail.com&quot;,&quot;password&quot;:&quot;OmaD&quot;,&quot;name&quot;:&quot;oluchi&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://picsum.photos/800&quot;,&quot;creationAt&quot;:&quot;2025-03-12T19:47:32.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T19:47:32.000Z&quot;},{&quot;id&quot;:53,&quot;email&quot;:&quot;nico@gmail.com&quot;,&quot;password&quot;:&quot;12345&quot;,&quot;name&quot;:&quot;Nicolas&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.lorem.space/image/face?w&#x3D;640&amp;h&#x3D;480&quot;,&quot;creationAt&quot;:&quot;2025-03-12T20:08:16.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T20:08:16.000Z&quot;},{&quot;id&quot;:54,&quot;email&quot;:&quot;sdaniloscofield11@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;teste&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T20:11:02.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T20:11:02.000Z&quot;},{&quot;id&quot;:55,&quot;email&quot;:&quot;sdaniloscofield222@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;teste&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T20:14:07.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T20:14:07.000Z&quot;},{&quot;id&quot;:56,&quot;email&quot;:&quot;sdaniloscofield3333333@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;teste&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T20:15:03.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T20:15:03.000Z&quot;},{&quot;id&quot;:57,&quot;email&quot;:&quot;sdaniloscofield333@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;teste&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T20:16:11.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T20:16:11.000Z&quot;},{&quot;id&quot;:58,&quot;email&quot;:&quot;Ned_Marquardt2@yahoo.com&quot;,&quot;password&quot;:&quot;SFh5pYKHiZAwaAW&quot;,&quot;name&quot;:&quot;Gilberto_Veum&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;avatar&quot;:&quot;image.exam&quot;,&quot;creationAt&quot;:&quot;2025-03-12T22:05:36.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T22:05:36.000Z&quot;},{&quot;id&quot;:59,&quot;email&quot;:&quot;beko@gmail.com&quot;,&quot;password&quot;:&quot;uhuhax202&quot;,&quot;name&quot;:&quot;beko&quot;,&quot;role&quot;:&quot;admin&quot;,&quot;avatar&quot;:&quot;image.exam&quot;,&quot;creationAt&quot;:&quot;2025-03-12T22:06:39.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T22:06:39.000Z&quot;},{&quot;id&quot;:60,&quot;email&quot;:&quot;test@gmail.com&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;name&quot;:&quot;Test&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://api.escuelajs.co/api/v1/files/10d11.jpg&quot;,&quot;creationAt&quot;:&quot;2025-03-12T23:14:09.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T23:14:09.000Z&quot;}]</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-61fab7f0-4d8d-4684-b926-fda29d5601ef">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="datatable table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Status code igual a 200</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Valida que o retorno é um array de usuários</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Valida que o array de usuários não está vazio</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">3</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-b5d534d8-c207-41a3-b94e-e732ac50c47d" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d" aria-expanded="false" aria-controls="collapse" id="requests-b5d534d8-c207-41a3-b94e-e732ac50c47d" class="collapsed text-white z-block">
+                    Iteration: 1 - Get a single user <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d" class="collapse" aria-labelledby="requests-b5d534d8-c207-41a3-b94e-e732ac50c47d">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://api.escuelajs.co/api/v1/users/51" target="_blank">https://api.escuelajs.co/api/v1/users/51</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 149ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 222B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Type</td>
+                                                        <td class="text-wrap">application/json</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">94842177-9dfe-477a-bfe2-2daf2fb89f19</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">api.escuelajs.co</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">Cowboy</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Report-To</td>
+                                                    <td class="text-wrap">{&quot;group&quot;:&quot;heroku-nel&quot;,&quot;max_age&quot;:3600,&quot;endpoints&quot;:[{&quot;url&quot;:&quot;https://nel.heroku.com/reports?ts&#x3D;1741828536&amp;sid&#x3D;c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&amp;s&#x3D;fFIH2f5UzXTcH1eqKuwtSW2dtFzOxSJU3Ie%2FSSImlBI%3D&quot;}]}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Reporting-Endpoints</td>
+                                                    <td class="text-wrap">heroku-nel&#x3D;https://nel.heroku.com/reports?ts&#x3D;1741828536&amp;sid&#x3D;c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&amp;s&#x3D;fFIH2f5UzXTcH1eqKuwtSW2dtFzOxSJU3Ie%2FSSImlBI%3D</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Nel</td>
+                                                    <td class="text-wrap">{&quot;report_to&quot;:&quot;heroku-nel&quot;,&quot;max_age&quot;:3600,&quot;success_fraction&quot;:0.005,&quot;failure_fraction&quot;:0.05,&quot;response_headers&quot;:[&quot;Via&quot;]}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Security-Policy</td>
+                                                    <td class="text-wrap">script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://cdn.jsdelivr.net;img-src &#x27;self&#x27; data: https://cdn.jsdelivr.net;default-src &#x27;self&#x27;;base-uri &#x27;self&#x27;;font-src &#x27;self&#x27; https: data:;form-action &#x27;self&#x27;;frame-ancestors &#x27;self&#x27;;object-src &#x27;none&#x27;;script-src-attr &#x27;none&#x27;;style-src &#x27;self&#x27; https: &#x27;unsafe-inline&#x27;;upgrade-insecure-requests</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Cross-Origin-Opener-Policy</td>
+                                                    <td class="text-wrap">same-origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Cross-Origin-Resource-Policy</td>
+                                                    <td class="text-wrap">same-origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Origin-Agent-Cluster</td>
+                                                    <td class="text-wrap">?1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Referrer-Policy</td>
+                                                    <td class="text-wrap">no-referrer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Strict-Transport-Security</td>
+                                                    <td class="text-wrap">max-age&#x3D;31536000; includeSubDomains</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td class="text-wrap">nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Dns-Prefetch-Control</td>
+                                                    <td class="text-wrap">off</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Download-Options</td>
+                                                    <td class="text-wrap">noopen</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td class="text-wrap">SAMEORIGIN</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Permitted-Cross-Domain-Policies</td>
+                                                    <td class="text-wrap">none</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Xss-Protection</td>
+                                                    <td class="text-wrap">0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Access-Control-Allow-Origin</td>
+                                                    <td class="text-wrap">*</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Length</td>
+                                                    <td class="text-wrap">222</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Etag</td>
+                                                    <td class="text-wrap">W/&quot;de-1Uxc7PS52opqUbCgzXWSXy4ZH5E&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Thu, 13 Mar 2025 01:15:36 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Via</td>
+                                                    <td class="text-wrap">1.1 vegur</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-45f74470-f26e-43d1-9be8-69ecddc909d9" class="prettyPrint">{&quot;id&quot;:51,&quot;email&quot;:&quot;sdaniloscofield@gmail.com&quot;,&quot;password&quot;:&quot;teste123&quot;,&quot;name&quot;:&quot;teste&quot;,&quot;role&quot;:&quot;customer&quot;,&quot;avatar&quot;:&quot;https://i.imgur.com/iejRXV7.png&quot;,&quot;creationAt&quot;:&quot;2025-03-12T18:47:30.000Z&quot;,&quot;updatedAt&quot;:&quot;2025-03-12T18:47:30.000Z&quot;}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-45f74470-f26e-43d1-9be8-69ecddc909d9">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="datatable table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Valida as chaves de retorno</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Valida que as propriedades não estão nulas nem vazias</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-98291145-8632-4183-9a30-5203305e1a16" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-98291145-8632-4183-9a30-5203305e1a16" aria-expanded="false" aria-controls="collapse" id="requests-98291145-8632-4183-9a30-5203305e1a16" class="collapsed text-white z-block">
+                    Iteration: 1 - Check email availability <i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-98291145-8632-4183-9a30-5203305e1a16" class="collapse" aria-labelledby="requests-98291145-8632-4183-9a30-5203305e1a16">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> POST</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://api.escuelajs.co/api/v1/users/is-available" target="_blank">https://api.escuelajs.co/api/v1/users/is-available</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 201 - Created</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 164ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 21B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar  bg-success" style="width: 100%" role="progressbar">
+                                            <h5 style="padding-top:5px;"><strong>100 %</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Type</td>
+                                                        <td class="text-wrap">application/json</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">a7d009f6-2b11-4b0d-b041-f596c709d116</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">api.escuelajs.co</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Content-Length</td>
+                                                        <td class="text-wrap">47</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Body</h5>
+                                        <div class="dyn-height">
+                                            <pre><code id="copyReqText-2" class="prettyPrint">{
+            &quot;email&quot;: &quot;sdaniloscofield6@gmail.com&quot;
+        }</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyReqText-2">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">Cowboy</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Report-To</td>
+                                                    <td class="text-wrap">{&quot;group&quot;:&quot;heroku-nel&quot;,&quot;max_age&quot;:3600,&quot;endpoints&quot;:[{&quot;url&quot;:&quot;https://nel.heroku.com/reports?ts&#x3D;1741828536&amp;sid&#x3D;c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&amp;s&#x3D;fFIH2f5UzXTcH1eqKuwtSW2dtFzOxSJU3Ie%2FSSImlBI%3D&quot;}]}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Reporting-Endpoints</td>
+                                                    <td class="text-wrap">heroku-nel&#x3D;https://nel.heroku.com/reports?ts&#x3D;1741828536&amp;sid&#x3D;c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&amp;s&#x3D;fFIH2f5UzXTcH1eqKuwtSW2dtFzOxSJU3Ie%2FSSImlBI%3D</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Nel</td>
+                                                    <td class="text-wrap">{&quot;report_to&quot;:&quot;heroku-nel&quot;,&quot;max_age&quot;:3600,&quot;success_fraction&quot;:0.005,&quot;failure_fraction&quot;:0.05,&quot;response_headers&quot;:[&quot;Via&quot;]}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Security-Policy</td>
+                                                    <td class="text-wrap">script-src &#x27;self&#x27; &#x27;unsafe-inline&#x27; https://cdn.jsdelivr.net;img-src &#x27;self&#x27; data: https://cdn.jsdelivr.net;default-src &#x27;self&#x27;;base-uri &#x27;self&#x27;;font-src &#x27;self&#x27; https: data:;form-action &#x27;self&#x27;;frame-ancestors &#x27;self&#x27;;object-src &#x27;none&#x27;;script-src-attr &#x27;none&#x27;;style-src &#x27;self&#x27; https: &#x27;unsafe-inline&#x27;;upgrade-insecure-requests</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Cross-Origin-Opener-Policy</td>
+                                                    <td class="text-wrap">same-origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Cross-Origin-Resource-Policy</td>
+                                                    <td class="text-wrap">same-origin</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Origin-Agent-Cluster</td>
+                                                    <td class="text-wrap">?1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Referrer-Policy</td>
+                                                    <td class="text-wrap">no-referrer</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Strict-Transport-Security</td>
+                                                    <td class="text-wrap">max-age&#x3D;31536000; includeSubDomains</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td class="text-wrap">nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Dns-Prefetch-Control</td>
+                                                    <td class="text-wrap">off</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Download-Options</td>
+                                                    <td class="text-wrap">noopen</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td class="text-wrap">SAMEORIGIN</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Permitted-Cross-Domain-Policies</td>
+                                                    <td class="text-wrap">none</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Xss-Protection</td>
+                                                    <td class="text-wrap">0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Access-Control-Allow-Origin</td>
+                                                    <td class="text-wrap">*</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;utf-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Length</td>
+                                                    <td class="text-wrap">21</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Etag</td>
+                                                    <td class="text-wrap">W/&quot;15-LbxKL9LPo4k6+4k+/TpxNZt2Xac&quot;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Thu, 13 Mar 2025 01:15:36 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Via</td>
+                                                    <td class="text-wrap">1.1 vegur</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-b4d6befb-0604-47bd-8247-da8ec150d0f0" class="prettyPrint">{&quot;isAvailable&quot;:false}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-b4d6befb-0604-47bd-8247-da8ec150d0f0">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="datatable table table-hover">
+                                        <thead><tr class="text-center"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th></tr></thead>
+                                            <tbody>
+                                                <tr >
+                                                    <td >Valida que o status é 201</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Valida se o email pode ser utilizado para um novo usuário</td>
+                                                    <td class="text-center bg-success">1</td>
+                                                    <td class="text-center ">0</td>
+                                                    <td class="text-center ">0</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr class="bg-light">
+                                                    <td><strong>Total</strong></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">0</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row d-none">
+                                    <div class="col-sm-12 mb-3">
+                                        <div class="card-deck">
+                                        <div class="card border-danger" style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-uppercase text-white text-center bg-danger">Test Failure</h5>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                    <thead><tr class="text-nowrap"><th>Test Name</th><th>Assertion Error</th></tr></thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Set slider initial position depending on the localstorage state -->
+
+<script>
+(function () {
+  var sliderChecked = true;
+  if (localStorage.getItem('theme') === 'theme-light') {
+    setTheme('theme-light');
+    sliderChecked = false;
+  } else {
+    setTheme('theme-dark');
+    sliderChecked = true;
+  }
+  $(document).ready( function () {
+    document.getElementById('slider').checked = sliderChecked;
+  });
+})();
+</script>
+
+<!-- Data Table Configuration -->
+
+<script>
+$(document).ready( function () {
+    $('.datatable').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+</script>
+
+<!-- Tooltip Configuration -->
+
+<script>
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    })
+})
+</script>
+
+<!-- Show/Hide The Folders -->
+
+<script>
+$('#openAll').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#folder-6f4d8d28-5caf-4443-abdc-9f1591b7cc59-iteration-0').removeClass('collapsed')
+            $('#folder-collapse-6f4d8d28-5caf-4443-abdc-9f1591b7cc59-iteration-0').addClass('show')
+        $('#openAll').html("Collapse Folders");
+        break;
+    case 2:
+            $('#folder-6f4d8d28-5caf-4443-abdc-9f1591b7cc59-iteration-0').addClass('collapsed')
+            $('#folder-collapse-6f4d8d28-5caf-4443-abdc-9f1591b7cc59-iteration-0').removeClass('show')
+        $('#openAll').html("Expand Folders");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Requests -->
+
+<script>
+$('#openAllRequests').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#requests-560008f8-8872-48c3-bcfd-6da86e125c98').removeClass('collapsed')
+            $('#collapse-560008f8-8872-48c3-bcfd-6da86e125c98').removeClass('collapsed')
+            $('#requests-560008f8-8872-48c3-bcfd-6da86e125c98').addClass('show')
+            $('#collapse-560008f8-8872-48c3-bcfd-6da86e125c98').addClass('show')
+            $('#requests-b5d534d8-c207-41a3-b94e-e732ac50c47d').removeClass('collapsed')
+            $('#collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d').removeClass('collapsed')
+            $('#requests-b5d534d8-c207-41a3-b94e-e732ac50c47d').addClass('show')
+            $('#collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d').addClass('show')
+            $('#requests-98291145-8632-4183-9a30-5203305e1a16').removeClass('collapsed')
+            $('#collapse-98291145-8632-4183-9a30-5203305e1a16').removeClass('collapsed')
+            $('#requests-98291145-8632-4183-9a30-5203305e1a16').addClass('show')
+            $('#collapse-98291145-8632-4183-9a30-5203305e1a16').addClass('show')
+        $('#openAllRequests').html("Collapse Requests");
+        break;
+    case 2:
+            $('#requests-560008f8-8872-48c3-bcfd-6da86e125c98').addClass('collapsed')
+            $('#collapse-560008f8-8872-48c3-bcfd-6da86e125c98').addClass('collapsed')
+            $('#requests-560008f8-8872-48c3-bcfd-6da86e125c98').removeClass('show')
+            $('#collapse-560008f8-8872-48c3-bcfd-6da86e125c98').removeClass('show')
+            $('#requests-b5d534d8-c207-41a3-b94e-e732ac50c47d').addClass('collapsed')
+            $('#collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d').addClass('collapsed')
+            $('#requests-b5d534d8-c207-41a3-b94e-e732ac50c47d').removeClass('show')
+            $('#collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d').removeClass('show')
+            $('#requests-98291145-8632-4183-9a30-5203305e1a16').addClass('collapsed')
+            $('#collapse-98291145-8632-4183-9a30-5203305e1a16').addClass('collapsed')
+            $('#requests-98291145-8632-4183-9a30-5203305e1a16').removeClass('show')
+            $('#collapse-98291145-8632-4183-9a30-5203305e1a16').removeClass('show')
+        $('#openAllRequests').html("Expand Requests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Skipped Tests -->
+
+<script>
+$('#openAllSkipped').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#skipped-560008f8-8872-48c3-bcfd-6da86e125c98').removeClass('collapsed')
+            $('#skipped-collapse-560008f8-8872-48c3-bcfd-6da86e125c98').removeClass('collapsed')
+            $('#skipped-560008f8-8872-48c3-bcfd-6da86e125c98').addClass('show')
+            $('#skipped-collapse-560008f8-8872-48c3-bcfd-6da86e125c98').addClass('show')
+            $('#skipped-b5d534d8-c207-41a3-b94e-e732ac50c47d').removeClass('collapsed')
+            $('#skipped-collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d').removeClass('collapsed')
+            $('#skipped-b5d534d8-c207-41a3-b94e-e732ac50c47d').addClass('show')
+            $('#skipped-collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d').addClass('show')
+            $('#skipped-98291145-8632-4183-9a30-5203305e1a16').removeClass('collapsed')
+            $('#skipped-collapse-98291145-8632-4183-9a30-5203305e1a16').removeClass('collapsed')
+            $('#skipped-98291145-8632-4183-9a30-5203305e1a16').addClass('show')
+            $('#skipped-collapse-98291145-8632-4183-9a30-5203305e1a16').addClass('show')
+        $('#openAllSkipped').html("Collapse All Skipped Tests");
+        break;
+    case 2:
+            $('#skipped-560008f8-8872-48c3-bcfd-6da86e125c98').addClass('collapsed')
+            $('#skipped-collapse-560008f8-8872-48c3-bcfd-6da86e125c98').addClass('collapsed')
+            $('#skipped-560008f8-8872-48c3-bcfd-6da86e125c98').removeClass('show')
+            $('#skipped-collapse-560008f8-8872-48c3-bcfd-6da86e125c98').removeClass('show')
+            $('#skipped-b5d534d8-c207-41a3-b94e-e732ac50c47d').addClass('collapsed')
+            $('#skipped-collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d').addClass('collapsed')
+            $('#skipped-b5d534d8-c207-41a3-b94e-e732ac50c47d').removeClass('show')
+            $('#skipped-collapse-b5d534d8-c207-41a3-b94e-e732ac50c47d').removeClass('show')
+            $('#skipped-98291145-8632-4183-9a30-5203305e1a16').addClass('collapsed')
+            $('#skipped-collapse-98291145-8632-4183-9a30-5203305e1a16').addClass('collapsed')
+            $('#skipped-98291145-8632-4183-9a30-5203305e1a16').removeClass('show')
+            $('#skipped-collapse-98291145-8632-4183-9a30-5203305e1a16').removeClass('show')
+        $('#openAllSkipped').html("Expand All Skipped Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Failures -->
+
+<script>
+$('#openAllFailed').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+let failedItemContent
+let failedItemHeading
+switch (clickCount){
+    case 1:
+        $('#openAllFailed').html("Collapse All Failed Tests");
+        break;
+    case 2:
+        $('#openAllFailed').html("Expand All Failed Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Pretty Print the Response Body-->
+
+<script>
+function isJSON(data)
+{
+    var ret = true;
+    try {
+            JSON.parse(data);
+    }catch(e) {
+            ret = false;
+    }
+    return ret;
+}
+
+function isXML(data)
+{
+    return (data.length > 0 && data[0] === '<');
+}
+
+// see https://gist.github.com/sente/1083506/d2834134cd070dbcc08bf42ee27dabb746a1c54d#gistcomment-2254622
+function formatXML(data) {
+    const PADDING = ' '.repeat(2); // set desired indent size here
+    const reg = /(>)(<)(\/*)/g;
+    let pad = 0;
+    xml = data.replace(reg, '$1\r\n$2$3');
+
+    return xml.split('\r\n').map((node, index) => {
+        let indent = 0;
+        if (node.match(/.+<\/\w[^>]*>$/)) {
+            indent = 0;
+        } else if (node.match(/^<\/\w/) && pad > 0) {
+            pad -= 1;
+        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        pad += indent;
+        return PADDING.repeat(pad - indent) + node;
+    }).join('\r\n');
+}
+
+$(".prettyPrint").each(function () {
+        var data = $(this).text();
+        // Verify whether data is JSON
+        if(isJSON(data))
+        {
+                obj = JSON.parse(data);
+                data = JSON.stringify(obj, null, 2);
+        }
+        else if(isXML(data)) {
+            data = formatXML(data);
+        }
+        $(this).text(data);
+});
+</script>
+
+
+<!-- Copy Response Body To Clipboard -->
+
+<script>
+    var clipboard = new ClipboardJS('.copyButton');
+
+    clipboard.on('success', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-success text-white")
+        e.trigger.textContent = '✔ Copied!';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-success text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+    clipboard.on('error', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-danger text-white")
+        e.trigger.textContent = '✗ Not Copied';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-danger text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+
+</script>
+
+<!-- Render the Description Markdown and link in the test failures -->
+
+<script>
+    const remarkable = new Remarkable();
+
+    const descriptions = document.querySelectorAll(".renderMarkdown");
+    descriptions.forEach(description => {
+        description.innerHTML = renderHtmlFromMarkdown(description.textContent);
+    });
+    function renderHtmlFromMarkdown(markdown) {
+        return remarkable.render(trim(markdown));
+    }
+    function trim(string) {
+        return string ? string.replace(/^ +| +$/gm, "") : string;
+    }
+</script>
+
+<!-- Show/Hide The Toggles When Scrolling The Page -->
+
+<script>
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("topOfRequestsScreen").style.display = "block";
+    document.getElementById("topOfFailuresScreen").style.display = "block";
+    document.getElementById("topOfSkippedScreen").style.display = "block";
+    document.getElementById("openAll").style.display = "none";
+    document.getElementById("openAllRequests").style.display = "none";
+
+
+  } else {
+    document.getElementById("topOfRequestsScreen").style.display = "none";
+    document.getElementById("topOfFailuresScreen").style.display = "none";
+    document.getElementById("topOfSkippedScreen").style.display = "none";
+    document.getElementById("openAll").style.display = "block";
+    document.getElementById("openAllRequests").style.display = "block";
+
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+
+<!-- Creates The Iteration Tabs -->
+
+<script type="text/javascript">
+    "use strict";
+
+window.onload = function () {
+
+  // set display for all blocks of response
+  var allItems = document.querySelectorAll('[class*=iteration-]');
+  allItems.forEach(function(elem){
+    elem.style.display = 'block';
+  });
+
+   
+  let totalIterations = 1;
+   
+
+  let menu = document.querySelector('#execution-menu .nav');
+
+  for(var i = 0; i < totalIterations; i++)
+  {
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode((i + 1)));
+    li.setAttribute('id', 'iteration-' + i);
+    li.classList.add("custom-tab");
+    li.classList.add("itPassed");
+
+    li.addEventListener('click', function() {
+      //set display to none for all except row
+      let allItems = document.querySelectorAll('[class*=iteration-]:not(.row)');
+      allItems.forEach(function(elem) {
+        elem.style.display = 'none';
+      })
+
+      let allMenus = document.querySelectorAll('[id*=iteration-]');
+      allMenus.forEach(function(elem){
+        elem.style.borderBottom = 'none';
+      })
+
+      this.style.borderBottom = 'solid 3px #032a33';
+
+      let items = document.querySelectorAll("." + this.id + ':not(.row)');
+      items.forEach(function(elem) {
+        elem.style.display = elem.style.display == 'block' ? 'none' : 'block';
+      })
+    });
+    menu.appendChild(li);
+  }
+
+  //shows first tab data
+  document.getElementById('iteration-0').click();
+  document.getElementById('iterationSelected').innerHTML = `Iteration ${document.getElementById('iteration-0').innerHTML} selected`
+
+}
+</script>
+
+<!-- Create the Selected Iteration Label -->
+
+<script>
+$(document).ready(function(){
+    $(function() {
+        $("#iterationList li").click(function() {
+            document.getElementById('iterationSelected').innerHTML = "Iteration " + this.innerHTML + " selected"
+        });
+    });
+});
+</script>
+
+<!-- Filter Action for the Iterations -->
+
+<script>
+$("#filterInput").on("input paste", function() {
+    var value = $(this).val();
+    $("#iterationList li").filter(function() {
+	    $("#showOnlyFailures").data("clickCount") ? $("#showOnlyFailures").click():null;
+        $(this).toggle($(this).text().indexOf(value) > -1)
+    });
+});
+</script>
+
+<!-- Showing the Failed Interations -->
+
+<script>
+$('#showOnlyFailures').on('click', function(e) {
+    let clickCount = $(this).data("clickCount") || 1
+	$("#filterInput").val()!="" && clickCount==1 ? $("#filterInput").val('').trigger('input'): null;
+    let selectedIteration = $('#iterationList li').filter(function () {
+        return $(this).css('border-bottom').indexOf("solid") > -1 && $(this).hasClass('itFailed');
+    });
+    selectedIteration.length || clickCount > 1 ? null : $("#iterationList li.itFailed")[0].click()
+    $("#iterationList li.itPassed").toggle()
+    $("div.bg-success [id*=requests]").parents('[class^="row iteration-"]').toggle();
+    clickCount = clickCount > 1 ? 1 : ++clickCount;
+    clickCount > 1 ? $("#showOnlyFailures").html("Show All Iterations") : $("#showOnlyFailures").html("Show Failed Iterations");
+    $(this).data("clickCount", clickCount)
+})
+</script>
+</body>
+</html>
