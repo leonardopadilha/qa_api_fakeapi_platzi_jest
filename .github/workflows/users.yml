@@ -17,12 +17,28 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
+      - name: Install newman
+        run: npm install -g newman
+
+      - name: Install Newman-Reporter-HtmlExtra
+        run: npm install -g newman-reporter-htmlextra
+
+      - name: Executando as collections do postman
+        run: newman run postman_collection.json --globals postman_environment.json -r htmlextra
+
+      - name: Salvando o relatório gerado através do newman
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: report-newman
+          path: newman/reports
 
       - name: Instalar dependencias
         run: npm install

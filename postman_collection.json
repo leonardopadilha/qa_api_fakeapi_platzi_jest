@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "60d9fffe-d1ef-43c1-92b0-81d49aa6cb70",
+		"name": "fakeapi_platzi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9966683",
+		"_collection_link": "https://automation-testing-4291.postman.co/workspace/curso_postman~76fac6c0-18b5-48ab-926b-6f10e87a75ea/collection/9966683-60d9fffe-d1ef-43c1-92b0-81d49aa6cb70?action=share&source=collection_link&creator=9966683"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const userId = () => {\r",
+									"    let users = pm.response.json()\r",
+									"    return Math.floor(Math.random() * users.length)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code igual a 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200)\r",
+									"}) \r",
+									"\r",
+									"pm.test(\"Valida que o retorno é um array de usuários\", function () {\r",
+									"    let users = pm.response.json()\r",
+									"    pm.expect(users).to.be.an(\"array\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Valida que o array de usuários não está vazio\", function() {\r",
+									"    let users = pm.response.json()\r",
+									"    pm.expect(users.length).to.be.greaterThan(0)\r",
+									"\r",
+									"    let user = pm.response.json()\r",
+									"    pm.environment.set(\"userId\", user[userId()].id)\r",
+									"    pm.environment.set(\"email\", user[userId()].email)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida as chaves de retorno\", function() {\r",
+									"    let user = pm.response.json()\r",
+									"    pm.expect(user).to.be.an('object');\r",
+									"\r",
+									"    pm.expect(user).to.have.all.keys(\"id\", \"email\", \"password\", \"name\", \"role\", \"avatar\", \"creationAt\", \"updatedAt\")\r",
+									"}) \r",
+									"\r",
+									"pm.test(\"Valida que as propriedades não estão nulas nem vazias\", function() {\r",
+									"    let user = pm.response.json()\r",
+									"    \r",
+									"    for (let userKey in user) {\r",
+									"        pm.expect(userKey).to.not.be.null\r",
+									"        pm.expect(userKey).to.not.be.empty\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check email availability",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida que o status é 201\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Valida se o email pode ser utilizado para um novo usuário\", function() {\r",
+									"    let user = pm.response.json()\r",
+									"     pm.expect(user).to.be.an('object');\r",
+									"     pm.expect(user.isAvailable).to.equal(false);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/is-available",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"is-available"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
