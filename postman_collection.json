@@ -35,9 +35,15 @@
 									"    let users = pm.response.json()\r",
 									"    pm.expect(users.length).to.be.greaterThan(0)\r",
 									"\r",
-									"    let user = pm.response.json()\r",
-									"    pm.environment.set(\"userId\", user[userId()].id)\r",
-									"    pm.environment.set(\"email\", user[userId()].email)\r",
+									"    let user = users[userId()]\r",
+									"    for (let userKey in user) {\r",
+									"        pm.expect(userKey).to.not.be.null\r",
+									"        pm.expect(userKey).not.to.be.empty\r",
+									"    }\r",
+									"\r",
+									"    pm.environment.set(\"userId\", user.id)\r",
+									"    pm.environment.set(\"email\", user.email)\r",
+									"    pm.environment.set(\"password\", user.password)\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -158,6 +164,186 @@
 							"path": [
 								"users",
 								"is-available"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida o status 201 como retorno\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Valida que o retorno contém as propriedades access_token e refresh_token\", function () {\r",
+									"    let jsonData = pm.response.json()\r",
+									"    pm.expect(Object.keys(jsonData).length).to.equal(2)\r",
+									"    pm.expect(jsonData).have.all.keys(\"access_token\", \"refresh_token\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Valida que os campos access_token e refresh_token não estão vazios\", function () {\r",
+									"    let user = pm.response.json()\r",
+									"    for(let userKey in user) {\r",
+									"        pm.expect(userKey).not.to.be.null\r",
+									"        pm.expect(userKey).not.to.be.empty\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login incorret email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida o status 401 como retorno\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(401)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Deve validar que o cliente não está autorizado\", function() {\r",
+									"    let user = pm.response.json()\r",
+									"    pm.expect(Object.keys(user).length).to.equal(2)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Deve validar que o login não está autorizado\", function() {\r",
+									"    let user = pm.response.json()\r",
+									"    pm.expect(user.message).to.equal(\"Unauthorized\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"email@incorret.com\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login incorret password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida o status 401 como retorno\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(401)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Deve validar que o cliente não está autorizado\", function() {\r",
+									"    let user = pm.response.json()\r",
+									"    pm.expect(Object.keys(user).length).to.equal(2)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Deve validar que o login não está autorizado\", function() {\r",
+									"    let user = pm.response.json()\r",
+									"    pm.expect(user.message).to.equal(\"Unauthorized\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"incorret-password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
 							]
 						}
 					},
