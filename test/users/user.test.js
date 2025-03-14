@@ -116,5 +116,22 @@ describe("#Users", () => {
         "email must be an email"
       ])
     })
+
+    it("Deve validar a obrigatoriedade do campo password no momento do cadastro", async() => {
+      const user = newUser()
+      delete user.password
+
+      const response = await request(BASE_URL)
+                              .post('/users')
+                              .set('Accept', 'application/json')
+                              .send(user)
+
+      expect(response.status).toEqual(400)
+      expect(response.body.message).toEqual([
+        "password must be longer than or equal to 4 characters",
+        "password should not be empty",
+        "password must contain only letters and numbers"
+      ])
+    })
   })
 })
