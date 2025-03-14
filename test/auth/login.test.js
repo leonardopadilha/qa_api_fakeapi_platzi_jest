@@ -20,4 +20,12 @@ describe("#Auth", () => {
     expect(response.status).toBe(401)
     expect(response.body.message).toEqual('Unauthorized')
   })
+
+  it('Login não deve ser feito com sucesso devido senha incorreta', async () => {
+    const response = await request(BASE_URL).post('/auth/login')
+                              .set('Accept', 'application/json')
+                              .send({ "email": "john@mail.com", "password": "senha-incorreta" })
+    expect(response.status).toBe(401)
+    expect(response.body.message).toEqual('Unauthorized')
+  })
 })
