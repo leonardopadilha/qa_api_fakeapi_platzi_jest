@@ -47,4 +47,16 @@ describe("#Users", () => {
       expect(user.body.message).toContain("Could not find any entity")
     })
   })
+
+  describe("POST /users/is-available", () => {
+    it('Deve informar se o email já está cadastrado', async() => {
+      const response = await request(BASE_URL)
+                                .post('/users/is-available')
+                                .set('Accept', 'application/json')
+                                .send({ "email": `${email}` })
+  
+      expect(response.status).toEqual(201)
+      expect(response.body.message).not.toBeTruthy()                
+    })
+  })
 })
