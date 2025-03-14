@@ -87,5 +87,18 @@ describe("#Users", () => {
       expect(response.status).toEqual(500)
       expect(response.body.message).toEqual("Internal server error")
     })
+
+    it("Deve validar a obrigatoriedade do campo nome no momento do cadastro", async() => {
+      const user = newUser()
+      delete user.name
+
+      const response = await request(BASE_URL)
+                              .post('/users')
+                              .set('Accept', 'application/json')
+                              .send(user)
+
+      expect(response.status).toEqual(500)
+      expect(response.body.message).toEqual("Internal server error")
+    })
   })
 })
