@@ -59,4 +59,23 @@ describe("#Users", () => {
       expect(response.body.message).not.toBeTruthy()                
     })
   })
+
+  describe('POST /users', () => {
+    it('Deve cadastrar o usuário com sucesso', async() => {
+      const user  = newUser()
+      const response = await request(BASE_URL)
+                                .post('/users')
+                                .set('Accept', 'application/json')
+                                .send(user)
+  
+      expect(response.status).toEqual(201)
+      expect(Object.keys(response.body).length).toEqual(8)
+      expect(Object.keys(response.body)).toEqual(["id", "email", "password", "name", "role", "avatar", "creationAt", "updatedAt"])
+  
+      for (let userKey in response.body) {
+        expect(userKey).not.toBeNull()
+        expect(userKey).not.toBeUndefined()
+      }
+    })
+  })
 })
