@@ -25,5 +25,18 @@ describe("#Users", () => {
       id = users.body[getId(users)].id
       email = users.body[getId(users)].email
     })
+
+    it('Deve retornar apenas um usuário', async () => {
+      const user = await request(BASE_URL).get(`/users/${id}`)
+  
+      expect(user.status).toEqual(200)
+      expect(Object.keys(user.body).length).toEqual(8)
+      expect(Object.keys(user.body)).toEqual(["id", "email", "password", "name", "role", "avatar", "creationAt", "updatedAt"])
+  
+      for (let userKey in user.body) {
+        expect(userKey).not.toBeNull()
+        expect(userKey).not.toBeUndefined()
+      }
+    })
   })
 })
