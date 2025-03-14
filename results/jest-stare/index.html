@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>jest-stare!</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/diff2html.min.css" rel="stylesheet" type="text/css">
+    <link href="css/jest-stare.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/holder.js"></script>
+    <script src="js/diff2html.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/view.js"></script>
+</head>
+
+<body>
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" id="navbar-title" href="#">jest-stare</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="coverage-link" class="nav-link disabled" href="#">Coverage</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="onoff-switch mr-sm-2 ml-sm-2">
+                            <input type="checkbox" name="off-switch" class="off-switch-checkbox" id="lab-passoff-switch" checked>
+                            <label class="onoff-switch-label" for="lab-passoff-switch">
+                                <span class="pass off-switch-inner"></span>
+                                <span class="off-switch-switch"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="onoff-switch mr-sm-2 ml-sm-2">
+                            <input type="checkbox" name="off-switch" class="off-switch-checkbox" id="lab-failoff-switch" checked>
+                            <label class="onoff-switch-label" for="lab-failoff-switch">
+                                <span class="fail off-switch-inner"></span>
+                                <span class="off-switch-switch"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="onoff-switch mr-sm-2 ml-sm-2">
+                            <input type="checkbox" name="off-switch" class="off-switch-checkbox" id="lab-pendingoff-switch" checked>
+                            <label class="onoff-switch-label" for="lab-pendingoff-switch">
+                                <span class="pending off-switch-inner"></span>
+                                <span class="off-switch-switch"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="onoff-switch mr-sm-2 ml-sm-2">
+                            <input type="checkbox" name="off-switch" class="off-switch-checkbox" id="lab-todooff-switch" checked>
+                            <label class="onoff-switch-label" for="lab-todooff-switch">
+                                <span class="todo off-switch-inner"></span>
+                                <span class="off-switch-switch"></span>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+                <!-- <form class="form-inline mt-2 mt-md-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" disabled>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" disabled>Search</button>
+                </form> -->
+            </div>
+        </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+
+        <h1 class="mt-5"></h1>
+
+        <!-- Three columns of text below the carousel -->
+        <div class="row">
+            <div class="col-lg-4">
+                <canvas id="test-suites-canvas" width="100" height="100"></canvas>
+                <h2>Test Suites</h2>
+                <div class="list-group">
+                    <p id="test-suites-results" class="list-group-item list-group-item-action">3 passed, 3 total</p>
+                </div>
+            </div>
+            <!-- /.col-lg-4 -->
+            <div class="col-lg-4">
+                <canvas id="tests-canvas" width="100" height="100"></canvas>
+                <h2>Tests</h2>
+                <div class="list-group">
+                    <p id="tests-results" class="list-group-item list-group-item-action">16 passed, 16 total</p>
+                </div>
+            </div>
+            <!-- /.col-lg-4 -->
+            <div class="col-lg-4" id="snapshots-group">
+                <canvas id="snapshots-canvas" width="100" height="100"></canvas>
+                <h2>Snapshots</h2>
+                <div class="list-group">
+                    <p id="snapshots-results" class="list-group-item list-group-item-action">0 passed, 0 total</p>
+                </div>
+            </div>
+            <!-- /.col-lg-4 -->
+        </div>
+
+        <div id="loading-info" class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                aria-valuemax="100" style="width: 100%"></div>
+        </div>
+
+        <div class="d-none" id="test-summary"></div>
+        <div class="d-none" id="test-config">{
+  &quot;resultDir&quot;: &quot;results&#x2F;jest-stare&#x2F;&quot;,
+  &quot;reportTitle&quot;: &quot;jest-stare!&quot;,
+  &quot;additionalResultsProcessors&quot;: [],
+  &quot;coverageLink&quot;: &quot;..&#x2F;..&#x2F;coverage&#x2F;lcov-report&#x2F;index.html&quot;,
+  &quot;jestStareConfigJson&quot;: &quot;jest-stare.json&quot;,
+  &quot;jestGlobalConfigJson&quot;: &quot;globalStuff.json&quot;,
+  &quot;resultHtml&quot;: &quot;index.html&quot;,
+  &quot;resultJson&quot;: &quot;jest-results.json&quot;
+}</div>
+        <div id="accordion">
+            <div class="d-none" id="test-results">{
+  &quot;numFailedTestSuites&quot;: 0,
+  &quot;numFailedTests&quot;: 0,
+  &quot;numPassedTestSuites&quot;: 3,
+  &quot;numPassedTests&quot;: 16,
+  &quot;numPendingTestSuites&quot;: 0,
+  &quot;numPendingTests&quot;: 0,
+  &quot;numRuntimeErrorTestSuites&quot;: 0,
+  &quot;numTodoTests&quot;: 0,
+  &quot;numTotalTestSuites&quot;: 3,
+  &quot;numTotalTests&quot;: 16,
+  &quot;openHandles&quot;: [],
+  &quot;snapshot&quot;: {
+    &quot;added&quot;: 0,
+    &quot;didUpdate&quot;: false,
+    &quot;failure&quot;: false,
+    &quot;filesAdded&quot;: 0,
+    &quot;filesRemoved&quot;: 0,
+    &quot;filesRemovedList&quot;: [],
+    &quot;filesUnmatched&quot;: 0,
+    &quot;filesUpdated&quot;: 0,
+    &quot;matched&quot;: 0,
+    &quot;total&quot;: 0,
+    &quot;unchecked&quot;: 0,
+    &quot;uncheckedKeysByFile&quot;: [],
+    &quot;unmatched&quot;: 0,
+    &quot;updated&quot;: 0
+  },
+  &quot;startTime&quot;: 1741970384437,
+  &quot;success&quot;: false,
+  &quot;testResults&quot;: [
+    {
+      &quot;leaks&quot;: false,
+      &quot;numFailingTests&quot;: 0,
+      &quot;numPassingTests&quot;: 10,
+      &quot;numPendingTests&quot;: 0,
+      &quot;numTodoTests&quot;: 0,
+      &quot;openHandles&quot;: [],
+      &quot;perfStats&quot;: {
+        &quot;end&quot;: 1741970391771,
+        &quot;runtime&quot;: 7186,
+        &quot;slow&quot;: true,
+        &quot;start&quot;: 1741970384585
+      },
+      &quot;skipped&quot;: false,
+      &quot;snapshot&quot;: {
+        &quot;added&quot;: 0,
+        &quot;fileDeleted&quot;: false,
+        &quot;matched&quot;: 0,
+        &quot;unchecked&quot;: 0,
+        &quot;uncheckedKeys&quot;: [],
+        &quot;unmatched&quot;: 0,
+        &quot;updated&quot;: 0
+      },
+      &quot;testFilePath&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\test\\users\\user.test.js&quot;,
+      &quot;testResults&quot;: [
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;GET &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 879,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users GET &#x2F;users Deve retornar todos os usuários&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 5,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve retornar todos os usuários&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;GET &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 444,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users GET &#x2F;users Deve retornar apenas um usuário&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 19,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve retornar apenas um usuário&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;GET &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 434,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users GET &#x2F;users Deve retornar erro devido id do usuário inválido&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 3,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve retornar erro devido id do usuário inválido&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;POST &#x2F;users&#x2F;is-available&quot;
+          ],
+          &quot;duration&quot;: 426,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users POST &#x2F;users&#x2F;is-available Deve informar se o email já está cadastrado&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve informar se o email já está cadastrado&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;POST &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 628,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users POST &#x2F;users Deve cadastrar o usuário com sucesso&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 19,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve cadastrar o usuário com sucesso&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;POST &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 541,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users POST &#x2F;users Deve retornar retorno devido dados do usuário em branco&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve retornar retorno devido dados do usuário em branco&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;POST &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 491,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users POST &#x2F;users Deve validar a obrigatoriedade do campo nome no momento do cadastro&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve validar a obrigatoriedade do campo nome no momento do cadastro&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;POST &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 634,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users POST &#x2F;users Deve validar a obrigatoriedade do campo email no momento do cadastro&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve validar a obrigatoriedade do campo email no momento do cadastro&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;POST &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 627,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users POST &#x2F;users Deve validar a obrigatoriedade do campo password no momento do cadastro&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve validar a obrigatoriedade do campo password no momento do cadastro&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Users&quot;,
+            &quot;POST &#x2F;users&quot;
+          ],
+          &quot;duration&quot;: 662,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Users POST &#x2F;users Deve validar a obrigatoriedade do campo avatar no momento do cadastro&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve validar a obrigatoriedade do campo avatar no momento do cadastro&quot;
+        }
+      ],
+      &quot;failureMessage&quot;: null,
+      &quot;v8Coverage&quot;: [
+        {
+          &quot;codeTransformResult&quot;: {
+            &quot;code&quot;: &quot;export default getId &#x3D; array &#x3D;&gt; {\n  return Math.floor(Math.random() * array.body.length);\n};\n&#x2F;&#x2F;# sourceMappingURL&#x3D;data:application&#x2F;json;charset&#x3D;utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJnZXRJZCIsImFycmF5IiwiTWF0aCIsImZsb29yIiwicmFuZG9tIiwiYm9keSIsImxlbmd0aCJdLCJzb3VyY2VzIjpbImdldElkLmpzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBkZWZhdWx0IGdldElkID0gKGFycmF5KSA9PiB7XHJcbiAgcmV0dXJuIE1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSAqIGFycmF5LmJvZHkubGVuZ3RoKVxyXG59Il0sIm1hcHBpbmdzIjoiQUFBQSxlQUFlQSxLQUFLLEdBQUlDLEtBQUssSUFBSztFQUNoQyxPQUFPQyxJQUFJLENBQUNDLEtBQUssQ0FBQ0QsSUFBSSxDQUFDRSxNQUFNLENBQUMsQ0FBQyxHQUFHSCxLQUFLLENBQUNJLElBQUksQ0FBQ0MsTUFBTSxDQUFDO0FBQ3RELENBQUMiLCJpZ25vcmVMaXN0IjpbXX0&#x3D;&quot;,
+            &quot;originalCode&quot;: &quot;export default getId &#x3D; (array) &#x3D;&gt; {\r\n  return Math.floor(Math.random() * array.body.length)\r\n}&quot;,
+            &quot;sourceMapPath&quot;: &quot;C:&#x2F;Users&#x2F;user&#x2F;AppData&#x2F;Local&#x2F;Temp&#x2F;jest&#x2F;jest-transform-cache-a146f36938ed29343e5afa9664f30f52-79ef2876fae7ca75eedb2aa53dc48338&#x2F;37&#x2F;getId_3747b1b138cb724ca5ffe5e481c20adc.map&quot;,
+            &quot;wrapperLength&quot;: 0
+          },
+          &quot;result&quot;: {
+            &quot;scriptId&quot;: &quot;1157&quot;,
+            &quot;url&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\functions\\getId.js&quot;,
+            &quot;functions&quot;: [
+              {
+                &quot;functionName&quot;: &quot;&quot;,
+                &quot;ranges&quot;: [
+                  {
+                    &quot;startOffset&quot;: 0,
+                    &quot;endOffset&quot;: 681,
+                    &quot;count&quot;: 1
+                  }
+                ],
+                &quot;isBlockCoverage&quot;: true
+              },
+              {
+                &quot;functionName&quot;: &quot;getId&quot;,
+                &quot;ranges&quot;: [
+                  {
+                    &quot;startOffset&quot;: 23,
+                    &quot;endOffset&quot;: 91,
+                    &quot;count&quot;: 5
+                  }
+                ],
+                &quot;isBlockCoverage&quot;: true
+              }
+            ]
+          }
+        },
+        {
+          &quot;codeTransformResult&quot;: {
+            &quot;code&quot;: &quot;import { faker } from &#39;@faker-js&#x2F;faker&#39;;\nexport default function newUser() {\n  return {\n    name: faker.person.fullName(),\n    email: faker.internet.email(),\n    password: faker.internet.password(),\n    avatar: \&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;800\&quot;\n  };\n}\n&#x2F;&#x2F;# sourceMappingURL&#x3D;data:application&#x2F;json;charset&#x3D;utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJmYWtlciIsIm5ld1VzZXIiLCJuYW1lIiwicGVyc29uIiwiZnVsbE5hbWUiLCJlbWFpbCIsImludGVybmV0IiwicGFzc3dvcmQiLCJhdmF0YXIiXSwic291cmNlcyI6WyJuZXdVc2VyLmpzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGZha2VyIH0gZnJvbSAnQGZha2VyLWpzL2Zha2VyJztcclxuXHJcbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIG5ld1VzZXIoKSB7XHJcbiAgcmV0dXJuIHtcclxuICAgIG5hbWU6IGZha2VyLnBlcnNvbi5mdWxsTmFtZSgpLFxyXG4gICAgZW1haWw6IGZha2VyLmludGVybmV0LmVtYWlsKCksXHJcbiAgICBwYXNzd29yZDogZmFrZXIuaW50ZXJuZXQucGFzc3dvcmQoKSxcclxuICAgIGF2YXRhcjogXCJodHRwczovL3BpY3N1bS5waG90b3MvODAwXCJcclxuICB9XHJcbn0iXSwibWFwcGluZ3MiOiJBQUFBLFNBQVNBLEtBQUssUUFBUSxpQkFBaUI7QUFFdkMsZUFBZSxTQUFTQyxPQUFPQSxDQUFBLEVBQUc7RUFDaEMsT0FBTztJQUNMQyxJQUFJLEVBQUVGLEtBQUssQ0FBQ0csTUFBTSxDQUFDQyxRQUFRLENBQUMsQ0FBQztJQUM3QkMsS0FBSyxFQUFFTCxLQUFLLENBQUNNLFFBQVEsQ0FBQ0QsS0FBSyxDQUFDLENBQUM7SUFDN0JFLFFBQVEsRUFBRVAsS0FBSyxDQUFDTSxRQUFRLENBQUNDLFFBQVEsQ0FBQyxDQUFDO0lBQ25DQyxNQUFNLEVBQUU7RUFDVixDQUFDO0FBQ0giLCJpZ25vcmVMaXN0IjpbXX0&#x3D;&quot;,
+            &quot;originalCode&quot;: &quot;import { faker } from &#39;@faker-js&#x2F;faker&#39;;\r\n\r\nexport default function newUser() {\r\n  return {\r\n    name: faker.person.fullName(),\r\n    email: faker.internet.email(),\r\n    password: faker.internet.password(),\r\n    avatar: \&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;800\&quot;\r\n  }\r\n}&quot;,
+            &quot;sourceMapPath&quot;: &quot;C:&#x2F;Users&#x2F;user&#x2F;AppData&#x2F;Local&#x2F;Temp&#x2F;jest&#x2F;jest-transform-cache-a146f36938ed29343e5afa9664f30f52-79ef2876fae7ca75eedb2aa53dc48338&#x2F;80&#x2F;newUser_802b99102e763bc915855a65cd2258ed.map&quot;,
+            &quot;wrapperLength&quot;: 0
+          },
+          &quot;result&quot;: {
+            &quot;scriptId&quot;: &quot;1158&quot;,
+            &quot;url&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\functions\\newUser.js&quot;,
+            &quot;functions&quot;: [
+              {
+                &quot;functionName&quot;: &quot;&quot;,
+                &quot;ranges&quot;: [
+                  {
+                    &quot;startOffset&quot;: 0,
+                    &quot;endOffset&quot;: 1278,
+                    &quot;count&quot;: 1
+                  }
+                ],
+                &quot;isBlockCoverage&quot;: true
+              },
+              {
+                &quot;functionName&quot;: &quot;newUser&quot;,
+                &quot;ranges&quot;: [
+                  {
+                    &quot;startOffset&quot;: 56,
+                    &quot;endOffset&quot;: 245,
+                    &quot;count&quot;: 5
+                  }
+                ],
+                &quot;isBlockCoverage&quot;: true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      &quot;leaks&quot;: false,
+      &quot;numFailingTests&quot;: 0,
+      &quot;numPassingTests&quot;: 4,
+      &quot;numPendingTests&quot;: 0,
+      &quot;numTodoTests&quot;: 0,
+      &quot;openHandles&quot;: [],
+      &quot;perfStats&quot;: {
+        &quot;end&quot;: 1741970394743,
+        &quot;runtime&quot;: 2885,
+        &quot;slow&quot;: false,
+        &quot;start&quot;: 1741970391858
+      },
+      &quot;skipped&quot;: false,
+      &quot;snapshot&quot;: {
+        &quot;added&quot;: 0,
+        &quot;fileDeleted&quot;: false,
+        &quot;matched&quot;: 0,
+        &quot;unchecked&quot;: 0,
+        &quot;uncheckedKeys&quot;: [],
+        &quot;unmatched&quot;: 0,
+        &quot;updated&quot;: 0
+      },
+      &quot;testFilePath&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\test\\auth\\login.test.js&quot;,
+      &quot;testResults&quot;: [
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Auth&quot;
+          ],
+          &quot;duration&quot;: 444,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Auth Login não deve ser feito com sucesso devido request sem dados&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Login não deve ser feito com sucesso devido request sem dados&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Auth&quot;
+          ],
+          &quot;duration&quot;: 455,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Auth Login não deve ser feito com sucesso devido email incorreto&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Login não deve ser feito com sucesso devido email incorreto&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Auth&quot;
+          ],
+          &quot;duration&quot;: 482,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Auth Login não deve ser feito com sucesso devido senha incorreta&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 2,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Login não deve ser feito com sucesso devido senha incorreta&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Auth&quot;
+          ],
+          &quot;duration&quot;: 849,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Auth Login deve ser realizado com sucesso&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 3,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Login deve ser realizado com sucesso&quot;
+        }
+      ],
+      &quot;failureMessage&quot;: null,
+      &quot;v8Coverage&quot;: [
+        {
+          &quot;codeTransformResult&quot;: {
+            &quot;code&quot;: &quot;export default getId &#x3D; array &#x3D;&gt; {\n  return Math.floor(Math.random() * array.body.length);\n};\n&#x2F;&#x2F;# sourceMappingURL&#x3D;data:application&#x2F;json;charset&#x3D;utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJnZXRJZCIsImFycmF5IiwiTWF0aCIsImZsb29yIiwicmFuZG9tIiwiYm9keSIsImxlbmd0aCJdLCJzb3VyY2VzIjpbImdldElkLmpzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBkZWZhdWx0IGdldElkID0gKGFycmF5KSA9PiB7XHJcbiAgcmV0dXJuIE1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSAqIGFycmF5LmJvZHkubGVuZ3RoKVxyXG59Il0sIm1hcHBpbmdzIjoiQUFBQSxlQUFlQSxLQUFLLEdBQUlDLEtBQUssSUFBSztFQUNoQyxPQUFPQyxJQUFJLENBQUNDLEtBQUssQ0FBQ0QsSUFBSSxDQUFDRSxNQUFNLENBQUMsQ0FBQyxHQUFHSCxLQUFLLENBQUNJLElBQUksQ0FBQ0MsTUFBTSxDQUFDO0FBQ3RELENBQUMiLCJpZ25vcmVMaXN0IjpbXX0&#x3D;&quot;,
+            &quot;originalCode&quot;: &quot;export default getId &#x3D; (array) &#x3D;&gt; {\r\n  return Math.floor(Math.random() * array.body.length)\r\n}&quot;,
+            &quot;sourceMapPath&quot;: &quot;C:&#x2F;Users&#x2F;user&#x2F;AppData&#x2F;Local&#x2F;Temp&#x2F;jest&#x2F;jest-transform-cache-a146f36938ed29343e5afa9664f30f52-79ef2876fae7ca75eedb2aa53dc48338&#x2F;37&#x2F;getId_3747b1b138cb724ca5ffe5e481c20adc.map&quot;,
+            &quot;wrapperLength&quot;: 0
+          },
+          &quot;result&quot;: {
+            &quot;scriptId&quot;: &quot;1560&quot;,
+            &quot;url&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\functions\\getId.js&quot;,
+            &quot;functions&quot;: [
+              {
+                &quot;functionName&quot;: &quot;&quot;,
+                &quot;ranges&quot;: [
+                  {
+                    &quot;startOffset&quot;: 0,
+                    &quot;endOffset&quot;: 681,
+                    &quot;count&quot;: 1
+                  }
+                ],
+                &quot;isBlockCoverage&quot;: true
+              },
+              {
+                &quot;functionName&quot;: &quot;getId&quot;,
+                &quot;ranges&quot;: [
+                  {
+                    &quot;startOffset&quot;: 23,
+                    &quot;endOffset&quot;: 91,
+                    &quot;count&quot;: 1
+                  }
+                ],
+                &quot;isBlockCoverage&quot;: true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      &quot;leaks&quot;: false,
+      &quot;numFailingTests&quot;: 0,
+      &quot;numPassingTests&quot;: 2,
+      &quot;numPendingTests&quot;: 0,
+      &quot;numTodoTests&quot;: 0,
+      &quot;openHandles&quot;: [],
+      &quot;perfStats&quot;: {
+        &quot;end&quot;: 1741970396502,
+        &quot;runtime&quot;: 1683,
+        &quot;slow&quot;: false,
+        &quot;start&quot;: 1741970394819
+      },
+      &quot;skipped&quot;: false,
+      &quot;snapshot&quot;: {
+        &quot;added&quot;: 0,
+        &quot;fileDeleted&quot;: false,
+        &quot;matched&quot;: 0,
+        &quot;unchecked&quot;: 0,
+        &quot;uncheckedKeys&quot;: [],
+        &quot;unmatched&quot;: 0,
+        &quot;updated&quot;: 0
+      },
+      &quot;testFilePath&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\test\\products\\products.test.js&quot;,
+      &quot;testResults&quot;: [
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Products&quot;,
+            &quot;GET &#x2F;products&quot;
+          ],
+          &quot;duration&quot;: 702,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Products GET &#x2F;products Deve retornar todos os produtos&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 4,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Deve retornar todos os produtos&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;#Products&quot;,
+            &quot;GET &#x2F;products&quot;
+          ],
+          &quot;duration&quot;: 467,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;#Products GET &#x2F;products Não deve retornar um produto inexistente&quot;,
+          &quot;invocations&quot;: 1,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 3,
+          &quot;retryReasons&quot;: [],
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;Não deve retornar um produto inexistente&quot;
+        }
+      ],
+      &quot;failureMessage&quot;: null,
+      &quot;v8Coverage&quot;: [
+        {
+          &quot;codeTransformResult&quot;: {
+            &quot;code&quot;: &quot;export default getId &#x3D; array &#x3D;&gt; {\n  return Math.floor(Math.random() * array.body.length);\n};\n&#x2F;&#x2F;# sourceMappingURL&#x3D;data:application&#x2F;json;charset&#x3D;utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJnZXRJZCIsImFycmF5IiwiTWF0aCIsImZsb29yIiwicmFuZG9tIiwiYm9keSIsImxlbmd0aCJdLCJzb3VyY2VzIjpbImdldElkLmpzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBkZWZhdWx0IGdldElkID0gKGFycmF5KSA9PiB7XHJcbiAgcmV0dXJuIE1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSAqIGFycmF5LmJvZHkubGVuZ3RoKVxyXG59Il0sIm1hcHBpbmdzIjoiQUFBQSxlQUFlQSxLQUFLLEdBQUlDLEtBQUssSUFBSztFQUNoQyxPQUFPQyxJQUFJLENBQUNDLEtBQUssQ0FBQ0QsSUFBSSxDQUFDRSxNQUFNLENBQUMsQ0FBQyxHQUFHSCxLQUFLLENBQUNJLElBQUksQ0FBQ0MsTUFBTSxDQUFDO0FBQ3RELENBQUMiLCJpZ25vcmVMaXN0IjpbXX0&#x3D;&quot;,
+            &quot;originalCode&quot;: &quot;export default getId &#x3D; (array) &#x3D;&gt; {\r\n  return Math.floor(Math.random() * array.body.length)\r\n}&quot;,
+            &quot;sourceMapPath&quot;: &quot;C:&#x2F;Users&#x2F;user&#x2F;AppData&#x2F;Local&#x2F;Temp&#x2F;jest&#x2F;jest-transform-cache-a146f36938ed29343e5afa9664f30f52-79ef2876fae7ca75eedb2aa53dc48338&#x2F;37&#x2F;getId_3747b1b138cb724ca5ffe5e481c20adc.map&quot;,
+            &quot;wrapperLength&quot;: 0
+          },
+          &quot;result&quot;: {
+            &quot;scriptId&quot;: &quot;1878&quot;,
+            &quot;url&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\functions\\getId.js&quot;,
+            &quot;functions&quot;: [
+              {
+                &quot;functionName&quot;: &quot;&quot;,
+                &quot;ranges&quot;: [
+                  {
+                    &quot;startOffset&quot;: 0,
+                    &quot;endOffset&quot;: 681,
+                    &quot;count&quot;: 1
+                  }
+                ],
+                &quot;isBlockCoverage&quot;: true
+              },
+              {
+                &quot;functionName&quot;: &quot;getId&quot;,
+                &quot;ranges&quot;: [
+                  {
+                    &quot;startOffset&quot;: 23,
+                    &quot;endOffset&quot;: 91,
+                    &quot;count&quot;: 2
+                  }
+                ],
+                &quot;isBlockCoverage&quot;: true
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  &quot;wasInterrupted&quot;: false
+}</div>
+        </div>
+        <div class="d-none" id="test-global-config">{
+  &quot;bail&quot;: 0,
+  &quot;changedFilesWithAncestor&quot;: false,
+  &quot;ci&quot;: false,
+  &quot;collectCoverage&quot;: true,
+  &quot;collectCoverageFrom&quot;: [],
+  &quot;coverageDirectory&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\coverage&quot;,
+  &quot;coverageProvider&quot;: &quot;v8&quot;,
+  &quot;coverageReporters&quot;: [
+    &quot;json&quot;,
+    &quot;text&quot;,
+    &quot;lcov&quot;,
+    &quot;clover&quot;
+  ],
+  &quot;detectLeaks&quot;: false,
+  &quot;detectOpenHandles&quot;: false,
+  &quot;errorOnDeprecated&quot;: false,
+  &quot;expand&quot;: false,
+  &quot;findRelatedTests&quot;: false,
+  &quot;forceExit&quot;: false,
+  &quot;json&quot;: false,
+  &quot;lastCommit&quot;: false,
+  &quot;listTests&quot;: false,
+  &quot;logHeapUsage&quot;: false,
+  &quot;maxConcurrency&quot;: 5,
+  &quot;maxWorkers&quot;: 1,
+  &quot;noStackTrace&quot;: false,
+  &quot;nonFlagArgs&quot;: [
+    &quot;test&#x2F;&quot;
+  ],
+  &quot;notify&quot;: false,
+  &quot;notifyMode&quot;: &quot;failure-change&quot;,
+  &quot;onlyChanged&quot;: false,
+  &quot;onlyFailures&quot;: false,
+  &quot;openHandlesTimeout&quot;: 1000,
+  &quot;passWithNoTests&quot;: false,
+  &quot;projects&quot;: [],
+  &quot;reporters&quot;: [
+    [
+      &quot;default&quot;,
+      {}
+    ],
+    [
+      &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\node_modules\\jest-stare\\lib\\index.js&quot;,
+      {
+        &quot;resultDir&quot;: &quot;results&#x2F;jest-stare&#x2F;&quot;,
+        &quot;reportTitle&quot;: &quot;jest-stare!&quot;,
+        &quot;additionalResultsProcessors&quot;: [],
+        &quot;coverageLink&quot;: &quot;..&#x2F;..&#x2F;coverage&#x2F;lcov-report&#x2F;index.html&quot;,
+        &quot;jestStareConfigJson&quot;: &quot;jest-stare.json&quot;,
+        &quot;jestGlobalConfigJson&quot;: &quot;globalStuff.json&quot;,
+        &quot;resultHtml&quot;: &quot;index.html&quot;,
+        &quot;resultJson&quot;: &quot;jest-results.json&quot;
+      }
+    ]
+  ],
+  &quot;rootDir&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi&quot;,
+  &quot;runTestsByPath&quot;: false,
+  &quot;seed&quot;: -470473000,
+  &quot;skipFilter&quot;: false,
+  &quot;snapshotFormat&quot;: {
+    &quot;escapeString&quot;: false,
+    &quot;printBasicPrototype&quot;: false
+  },
+  &quot;testFailureExitCode&quot;: 1,
+  &quot;testPathPattern&quot;: &quot;test\\\\&quot;,
+  &quot;testSequencer&quot;: &quot;C:\\Users\\user\\Desktop\\fakeapi_platzi\\node_modules\\@jest\\test-sequencer\\build\\index.js&quot;,
+  &quot;updateSnapshot&quot;: &quot;new&quot;,
+  &quot;useStderr&quot;: false,
+  &quot;verbose&quot;: true,
+  &quot;watch&quot;: false,
+  &quot;watchAll&quot;: false,
+  &quot;watchman&quot;: true,
+  &quot;workerThreads&quot;: false
+}</div>
+
+    </main>
+    <hr>
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">jest-stare 2022</span>
+        </div>
+    </footer>
+</body>
+
+</html>
+

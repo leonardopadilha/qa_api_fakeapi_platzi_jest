@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
+    "jest-stare": "^2.5.2",
     "supertest": "^7.0.0"
   }
 }
