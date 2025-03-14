@@ -133,5 +133,21 @@ describe("#Users", () => {
         "password must contain only letters and numbers"
       ])
     })
+
+      it("Deve validar a obrigatoriedade do campo avatar no momento do cadastro", async() => {
+        const user = newUser()
+        delete user.avatar
+  
+        const response = await request(BASE_URL)
+                                .post('/users')
+                                .set('Accept', 'application/json')
+                                .send(user)
+  
+        expect(response.status).toEqual(400)
+        expect(response.body.message).toEqual([
+          "avatar should not be empty",
+          "avatar must be a URL address"
+        ])
+    })
   })
 })
