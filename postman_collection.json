@@ -117,6 +117,49 @@
 					"response": []
 				},
 				{
+					"name": "Get an invalid user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida status de retorno 400\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Valida mensagem de erro\", function() {\r",
+									"    pm.expect(pm.response.json().name).to.equal(\"EntityNotFoundError\")\r",
+									"    pm.expect(pm.response.json().message).to.contain(\"Could not find any entity\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/000",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Check email availability",
 					"event": [
 						{
@@ -164,6 +207,115 @@
 							"path": [
 								"users",
 								"is-available"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida que o status de retorno é o 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Valida que os campos não estão vazios\", function() {\r",
+									"    let user = pm.response.json()\r",
+									"    pm.expect(user).to.be.an('object');\r",
+									"\r",
+									"    pm.expect(Object.keys(user).length).to.equal(8)\r",
+									"    pm.expect(user).to.have.all.keys(\"id\", \"email\", \"password\", \"name\", \"role\", \"avatar\", \"creationAt\", \"updatedAt\")\r",
+									"\r",
+									"    for (let userKey in user) {\r",
+									"        pm.expect(userKey).not.to.be.empty\r",
+									"        pm.expect(userKey).not.to.be.null\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Nicolas\",\r\n  \"email\": \"nico@gmail.com\",\r\n  \"password\": \"1234\",\r\n  \"avatar\": \"https://picsum.photos/800\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create empy user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida que o status de retorno é o 500\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(500)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Valida mensagem de erro\", function() {\r",
+									"    pm.expect(pm.response.json().message).to.equal(\"Internal server error\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
 							]
 						}
 					},
@@ -344,6 +496,56 @@
 							"path": [
 								"auth",
 								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get all products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const productId = () => {\r",
+									"    let product = pm.response.json()\r",
+									"    return Math.floor(Math.random() * product.length)\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Valida o statusCode 200\", function() {\r",
+									"    pm.expect(pm.response.code).to.equal(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Valida que o retorno é um array de produtos\", function() {\r",
+									"    let products = pm.response.json()\r",
+									"    pm.expect(products).to.be.an(\"array\")\r",
+									"    pm.expect(products.length).to.be.greaterThan(0)\r",
+									"\r",
+									"    pm.expect(products[productId()].id).not.to.be.null\r",
+									"    pm.environment.set(\"productId\", products[productId()].id)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
 							]
 						}
 					},
