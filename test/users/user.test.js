@@ -77,5 +77,15 @@ describe("#Users", () => {
         expect(userKey).not.toBeUndefined()
       }
     })
+
+    it('Deve retornar retorno devido dados do usuário em branco', async() => {
+      const response = await request(BASE_URL)
+                                .post('/users')
+                                .set('Accept', 'application/json')
+                                .send()
+  
+      expect(response.status).toEqual(500)
+      expect(response.body.message).toEqual("Internal server error")
+    })
   })
 })
