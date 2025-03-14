@@ -38,5 +38,13 @@ describe("#Users", () => {
         expect(userKey).not.toBeUndefined()
       }
     })
+
+    it('Deve retornar erro devido id do usuário inválido', async () => {
+      const user = await request(BASE_URL).get(`/users/000`)
+  
+      expect(user.status).toEqual(400)
+      expect(user.body.name).toEqual("EntityNotFoundError")
+      expect(user.body.message).toContain("Could not find any entity")
+    })
   })
 })
