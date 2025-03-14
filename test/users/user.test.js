@@ -100,5 +100,21 @@ describe("#Users", () => {
       expect(response.status).toEqual(500)
       expect(response.body.message).toEqual("Internal server error")
     })
+
+    it("Deve validar a obrigatoriedade do campo email no momento do cadastro", async() => {
+      const user = newUser()
+      delete user.email
+
+      const response = await request(BASE_URL)
+                              .post('/users')
+                              .set('Accept', 'application/json')
+                              .send(user)
+
+      expect(response.status).toEqual(400)
+      expect(response.body.message).toEqual([
+        "email should not be empty",
+        "email must be an email"
+      ])
+    })
   })
 })
