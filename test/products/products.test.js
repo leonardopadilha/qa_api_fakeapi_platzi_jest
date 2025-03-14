@@ -15,6 +15,13 @@ describe("#Products", () => {
       expect(response.body[getId(response)].id).not.toBeNull()
       expect(response.body[getId(response)].id).not.toBeUndefined()
     })
+
+    it("Não deve retornar um produto inexistente", async() => {
+      const response = await request(BASE_URL).get('/products/000')
+      expect(response.status).toEqual(400)
+      expect(response.body.name).toEqual("EntityNotFoundError")
+      expect(response.body.message).toContain("Could not find any entity of type")
+    })
   })
 })
 
