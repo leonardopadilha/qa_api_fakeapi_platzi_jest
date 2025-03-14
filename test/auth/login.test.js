@@ -28,4 +28,20 @@ describe("#Auth", () => {
     expect(response.status).toBe(401)
     expect(response.body.message).toEqual('Unauthorized')
   })
+
+  it('Login deve ser realizado com sucesso', async () => {
+    const users = await request(BASE_URL).get('/users')
+    let user = users.body[getId(users)]
+
+    const email = user.email
+    const password = user.password
+
+    const response = await request(BASE_URL).post('/auth/login')
+                              .set('Accept', 'application/json')
+                              .send({ "email": `${email}`, "password": `${password}` })
+
+    expect(response.status).toBe(201)
+    expect(Object.keys(response.body).length).toEqual(2)
+    expect(Object.keys(response.body)).toEqual(["access_token", "refresh_token"])
+  })
 })
