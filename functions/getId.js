@@ -1,3 +1,3 @@
-export default userId = (users) => {
-  return Math.floor(Math.random() * users.body.length)
+export default getId = (array) => {
+  return Math.floor(Math.random() * array.body.length)
 }
