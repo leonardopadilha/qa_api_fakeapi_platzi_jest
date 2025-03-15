@@ -28,7 +28,7 @@ jobs:
         run: npm install -g newman
 
       - name: Install Newman-Reporter-HtmlExtra
-        run: npm install -g newman-reporter-htmlextra
+        run: npm install -g newman-reporter-html
 
       - name: Executando as collections do postman via terminal
         run: newman run postman_collection.json --globals postman_environment.json
