@@ -9,7 +9,7 @@ const config = {
   clearMocks: true,
   coverageProvider: "v8",
   collectCoverage: true,
-  "reporters": [
+  reporters: [
     "default",
     [
       "jest-stare",
