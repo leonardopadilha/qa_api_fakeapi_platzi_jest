@@ -27,7 +27,7 @@ jobs:
       - name: Install newman
         run: npm install -g newman
 
-      - name: Install Newman-Reporter-HtmlExtra
+      - name: Install Newman-Reporter-Html
         run: npm install -g newman-reporter-html
 
       - name: Executando as collections do postman via terminal
