@@ -1,6 +1,8 @@
 import request from 'supertest';
 import { describe, expect, it } from '@jest/globals'
 import getId from '../../functions/getId.js';
+import newProduct from '../../functions/newProduct.js'
+import data from '../support/fixtures/products.json'
 
 import 'dotenv/config'
 
@@ -50,12 +52,15 @@ describe("#Products", () => {
         "creationAt": "",
         "updatedAt": ""
     }
-
-    console.log("tipo: " + typeof expectedProductBody.id)
-
       expect(response.status).toEqual(200)
       expect(Object.keys(response.body)).toEqual(Object.keys(expectedProductBody))
+    })
 
+    it('Deve retornar erro quando o id for passado como string', async() => {
+      const response = await request(BASE_URL).get('/products/id-string')
+      expect(response.status).toEqual(400)
+      expect(response.body.error).toEqual("Bad Request")
+      expect(response.body.message).toEqual("Validation failed (numeric string is expected)")
     })
   })
 })
