@@ -106,6 +106,20 @@ describe("#Products", () => {
         "images must be an array"
       ])
     })
+
+    it('Deve cadastrar um produto com sucesso', async () => {
+      const expectedProductBody = data.success
+      const produto = newProduct()
+
+      const response = await request(BASE_URL).post('/products')
+                              .set('Accept', 'application/json')
+                              .send(produto)
+
+      expect(response.status).toEqual(201)
+      expect(Object.keys(response.body)).toEqual(Object.keys(expectedProductBody))
+      expect(Object.values(response.body)).not.toBeNull()
+      expect(Object.values(response.body)).not.toBeUndefined()
+    })
   })
 })
 
