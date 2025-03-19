@@ -90,6 +90,22 @@ describe("#Products", () => {
         "categoryId must be a number conforming to the specified constraints"
       ])
     })
+
+    it('Deve validar obrigatóriedade do campo images', async () => {
+      const produto = newProduct()
+      delete produto.images
+
+      const response = await request(BASE_URL).post('/products')
+                              .set('Accept', 'application/json')
+                              .send(produto)
+      expect(response.status).toEqual(400)
+      expect(response.body.message).toEqual([
+        "images must contain at least 1 elements",
+        "images should not be empty",
+        "each value in images must be a URL address",
+        "images must be an array"
+      ])
+    })
   })
 })
 
