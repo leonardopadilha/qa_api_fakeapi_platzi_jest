@@ -76,6 +76,20 @@ describe("#Products", () => {
         "price must be a positive number"
       ])
     })
+
+    it('Deve validar obrigatóriedade do campo category', async () => {
+      const produto = newProduct()
+      delete produto.categoryId
+
+      const response = await request(BASE_URL).post('/products')
+                              .set('Accept', 'application/json')
+                              .send(produto)
+      expect(response.status).toEqual(400)
+      expect(response.body.message).toEqual([
+        "categoryId should not be empty",
+        "categoryId must be a number conforming to the specified constraints"
+      ])
+    })
   })
 })
 
