@@ -11,6 +11,7 @@ Automação de teste Web utilizando Jest
 [![Faker](https://img.shields.io/badge/license-faker-green.svg)](https://fakerjs.dev/)
 [![Jest-Stare](https://img.shields.io/badge/license-jestStare-green.svg)](https://www.npmjs.com/package/jest-stare)
 [![Serve](https://img.shields.io/badge/license-serve-blue.svg)](https://www.npmjs.com/package/serve)
+[![k6](https://img.shields.io/badge/license-k6-blue.svg)](https://k6.io/)
 [![JS](https://img.shields.io/badge/license-javascript-blue.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 ## Descrição do Projeto
@@ -30,6 +31,12 @@ Instalar as dependências
 
 ```bash
   npm run test
+```
+
+## Execução dos testes com k6 em todos os produtos
+
+```bash
+  npm run k6:allproducts
 ```
 
 ## Executa os testes do Newman e gera um relatório newman_report.html no diretório onde o comando é executado
