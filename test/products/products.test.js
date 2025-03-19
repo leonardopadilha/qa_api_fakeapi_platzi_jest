@@ -62,6 +62,20 @@ describe("#Products", () => {
       expect(response.body.error).toEqual("Bad Request")
       expect(response.body.message).toEqual("Validation failed (numeric string is expected)")
     })
+
+    it('Deve validar obrigatóriedade do campo price', async () => {
+      const produto = newProduct()
+      delete produto.price
+
+      const response = await request(BASE_URL).post('/products')
+                              .set('Accept', 'application/json')
+                              .send(produto)
+      expect(response.status).toEqual(400)
+      expect(response.body.message).toEqual([
+        "price should not be empty",
+        "price must be a positive number"
+      ])
+    })
   })
 })
 
